@@ -2,24 +2,121 @@
 <html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Spotify Vinyl & Immersive Lyrics</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        spotify: '#1DB954',
-                        spotifyDark: '#121212',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Google Fonts Plus Jakarta Sans + FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --bg-color: #86F46F;        
+            --card-bg: #ffffff;
+            --border-color: #111111;
+            --border-width: 3px;
+            --box-shadow: 4px 4px 0px #111111;
+            --box-shadow-lg: 6px 6px 0px #111111;
+            
+            --yellow: #F5EA48;        
+            --blue: #B05CF2;          
+            --pink: #DF39F4;          
+            --green: #86F46F;         
+            --spotify: #1DB954;
+            
+            --text-bright: #111111;
+            --text-dark: #000000;
+            --text-muted: #555555;
+            
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border: 2px solid var(--card-bg);
+            border-radius: 4px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--border-color);
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            selection-background-color: var(--pink);
+            selection-color: #fff;
+        }
+
+        /* Utilitários Estéticos */
+        .card {
+            background: var(--card-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--box-shadow-lg);
+            position: relative;
+        }
+
+        .btn {
+            background-color: var(--pink);
+            color: #fff;
+            border: var(--border-width) solid var(--border-color);
+            padding: 11px 18px;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 0px #111;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px #111;
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #111;
+        }
+
+        .btn-secondary {
+            background-color: var(--blue);
+            color: #fff;
+            box-shadow: 2px 2px 0px #111;
+        }
+
+        .btn-spotify {
+            background-color: var(--spotify);
+            color: #000;
+        }
+
+        /* Animações e Vinil */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -30,7 +127,7 @@
         .paused {
             animation-play-state: paused;
         }
-        /* Ranhuras do Vinil */
+
         .vinyl-grooves {
             background: repeating-radial-gradient(
                 circle at center,
@@ -58,45 +155,60 @@
                 #110022 4px
             );
         }
-        /* Scrollbars customizadas */
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+            z-index: 2;
         }
-        ::-webkit-scrollbar-track {
-            background: transparent;
+
+        header {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 24px;
+            box-shadow: var(--box-shadow);
         }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(29, 185, 84, 0.5);
+
+        /* Responsividade Mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 8px;
+            }
+            header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 selection:bg-spotify selection:text-black">
+<body class="selection:bg-pink selection:text-white">
 
-    <!-- Cabeçalho -->
-    <header class="w-full max-w-5xl flex justify-between items-center py-3 px-2 sm:px-4 z-25">
+    <!-- Cabeçalho Estético -->
+    <header>
         <div class="flex items-center space-x-2">
-            <svg class="w-7 h-7 sm:w-8 sm:h-8 text-spotify" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="w-7 h-7 sm:w-8 sm:h-8 text-black" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.421.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.24 1.08zm1.44-3.9c-.301.42-.841.6-1.261.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.2-1.26 9.6-0.6 13.38 1.68.48.3.6.9.36 1.38zm.12-4.08C13.92 7.08 8.1 6.9 4.8 7.92c-.6.18-1.2-.18-1.38-.78-.18-.6.18-1.2.78-1.38 3.84-1.2 10.38-0.96 14.7 1.62.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
             </svg>
-            <span class="font-bold text-base sm:text-lg tracking-wider">VinylPlayer</span>
+            <span class="font-extrabold text-lg tracking-wider text-black">VinylPlayer</span>
         </div>
         
-        <!-- Controles do Header -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
-            <!-- Botão de Alternar Divisão de Tela (Apenas em telas grandes / Desktop) -->
-            <button id="split-toggle-btn" onclick="toggleSplitLayout()" class="hidden lg:flex text-xs bg-gray-900/60 hover:bg-gray-800 text-gray-300 px-3 py-2 rounded-xl transition border border-gray-800 items-center space-x-1.5 shadow-sm" title="Dividir tela com letras">
-                <svg class="w-4 h-4 text-spotify" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4H5a2 2 0 00-2 2v12a2 2 0 002 2h4m10-16h4a2 2 0 012 2v12a2 2 0 01-2 2h-4m-10 0V4m10 0v16"></path></svg>
+        <div class="flex items-center space-x-2">
+            <button id="split-toggle-btn" onclick="toggleSplitLayout()" class="hidden lg:flex btn btn-secondary text-xs py-1.5 px-3" title="Dividir tela com letras">
+                <i class="fa-solid fa-columns"></i>
                 <span id="split-btn-text">Dividir Tela</span>
             </button>
 
-            <!-- Botão de Letras em Tela Cheia -->
-            <button id="fullscreen-lyrics-trigger" onclick="toggleFullscreenLyricsModal(true)" class="hidden p-2.5 rounded-xl bg-gray-900/60 hover:bg-gray-800 text-spotify transition shadow-sm border border-gray-800 flex items-center justify-center" title="Abrir Letras em Tela Cheia">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+            <button id="fullscreen-lyrics-trigger" onclick="toggleFullscreenLyricsModal(true)" class="hidden btn text-xs py-1.5 px-3" title="Abrir Letras em Tela Cheia">
+                <i class="fa-solid fa-expand"></i>
             </button>
 
             <div id="auth-container"></div>
@@ -104,94 +216,94 @@
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="w-full max-w-5xl flex flex-col items-center justify-center my-auto space-y-6">
+    <main class="container my-auto items-center justify-center py-4">
         
         <!-- Estado Desconectado -->
-        <div id="login-screen" class="text-center py-10 px-6 sm:py-14 sm:px-8 max-w-md w-full">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-spotify/10 rounded-full flex items-center justify-center mx-auto mb-5 text-spotify">
-                <svg class="w-8 h-8 sm:w-10 sm:h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+        <div id="login-screen" class="card text-center py-12 px-6 max-w-md w-full">
+            <div class="w-16 h-16 bg-pink/20 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[2px_2px_0px_#111]">
+                <i class="fa-solid fa-compact-disc text-2xl animate-spin-slow"></i>
             </div>
-            <h2 class="text-xl sm:text-2xl font-bold mb-2">Conecte sua conta</h2>
-            <p class="text-gray-400 text-xs sm:text-sm mb-6">Experimente o vinil interativo e as opções avançadas de letras sincronizadas.</p>
-            <button id="login-btn" class="w-full bg-spotify hover:bg-spotify/90 text-black font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-spotify/20 flex items-center justify-center space-x-2 text-sm sm:text-base">
+            <h2 class="text-xl sm:text-2xl font-extrabold mb-2 text-black">Conecte sua conta</h2>
+            <p class="text-gray-600 text-xs sm:text-sm font-semibold mb-6">Experimente o vinil interativo e as opções avançadas de letras sincronizadas com estilo exclusivo.</p>
+            <button id="login-btn" class="btn btn-spotify w-full py-3.5 px-6 font-extrabold text-black shadow-[4px_4px_0px_#111]">
+                <i class="fa-brands fa-spotify text-lg"></i>
                 <span>Conectar com o Spotify</span>
             </button>
         </div>
 
         <!-- Estado Conectado / Player -->
-        <div id="player-screen" class="w-full flex flex-col items-center justify-center hidden py-2 sm:py-4">
+        <div id="player-screen" class="w-full flex flex-col items-center justify-center hidden">
             
-            <!-- Contêiner Dinâmico -->
-            <div id="player-layout-container" class="flex flex-col items-center justify-center w-full max-w-md transition-all duration-300 gap-6 sm:gap-8">
+            <div id="player-layout-container" class="flex flex-col items-center justify-center w-full max-w-md transition-all duration-300 gap-6">
                 
                 <!-- Player & Vinil -->
-                <div class="flex flex-col items-center space-y-5 sm:space-y-6 w-full max-w-md px-2">
+                <div class="card flex flex-col items-center space-y-5 w-full max-w-md">
                     
                     <!-- Seletores de Tema do Vinil -->
-                    <div class="flex space-x-1.5 sm:space-x-2 bg-gray-900/40 p-1 rounded-xl border border-gray-800/60 text-[11px] sm:text-xs">
-                        <button onclick="setTheme('classic')" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-gray-800 transition theme-btn" data-theme="classic">Clássico</button>
-                        <button onclick="setTheme('gold')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-800 transition theme-btn" data-theme="gold">Dourado</button>
-                        <button onclick="setTheme('cyber')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-800 transition theme-btn" data-theme="cyber">Cyberpunk</button>
+                    <div class="flex space-x-2 bg-gray-100 p-1.5 rounded-xl border-2 border-black text-xs shadow-[2px_2px_0px_#111]">
+                        <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-pink text-white font-extrabold border-2 border-black transition theme-btn shadow-[1px_1px_0px_#111]" data-theme="classic">Clássico</button>
+                        <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-200 font-extrabold text-black transition theme-btn" data-theme="gold">Dourado</button>
+                        <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-200 font-extrabold text-black transition theme-btn" data-theme="cyber">Cyberpunk</button>
                     </div>
 
-                    <!-- Palco do Vinil (Responsivo para telas menores) -->
+                    <!-- Palco do Vinil -->
                     <div class="relative w-60 h-60 sm:w-64 sm:h-64 flex items-center justify-center my-2">
-                        <div id="album-sleeve" class="absolute left-0 w-48 h-48 sm:w-52 sm:h-52 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-4 sm:-translate-x-5 rotate-[-4deg]">
-                            <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
+                        <div id="album-sleeve" class="absolute left-0 w-48 h-48 sm:w-52 sm:h-52 bg-white rounded-xl border-3 border-black shadow-[6px_6px_0px_#111] overflow-hidden transition-all duration-500 transform -translate-x-4 sm:-translate-x-6 rotate-[-4deg]">
+                            <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover">
                         </div>
-                        <div id="vinyl-record" class="absolute right-0 w-52 h-52 sm:w-56 sm:h-56 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
+                        <div id="vinyl-record" class="absolute right-0 w-52 h-52 sm:w-56 sm:h-56 rounded-full vinyl-grooves shadow-[6px_6px_0px_#111] flex items-center justify-center border-4 border-black animate-spin-slow paused transition-all duration-300">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-3 border-black relative shadow-inner flex items-center justify-center bg-white">
                                 <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
-                                <div class="absolute w-3.5 h-3.5 bg-gray-950 rounded-full border border-gray-700"></div>
+                                <div class="absolute w-4 h-4 bg-black rounded-full border border-white"></div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Informações da Música -->
-                    <div class="w-full text-center space-y-1 px-4">
-                        <h3 id="track-name" class="text-base sm:text-lg font-bold truncate text-white">Nenhuma música tocando</h3>
-                        <p id="artist-name" class="text-xs sm:text-sm text-gray-400 truncate">Abra o Spotify e dê play</p>
+                    <div class="w-full text-center space-y-1 px-2">
+                        <h3 id="track-name" class="text-base sm:text-lg font-extrabold truncate text-black">Nenhuma música tocando</h3>
+                        <p id="artist-name" class="text-xs sm:text-sm text-gray-600 font-bold truncate">Abra o Spotify e dê play</p>
                     </div>
 
                     <!-- Barra de Progresso -->
-                    <div class="w-full space-y-1 px-4">
-                        <div class="flex justify-between text-[11px] sm:text-xs text-gray-400 font-mono">
+                    <div class="w-full space-y-1 px-2">
+                        <div class="flex justify-between text-[11px] sm:text-xs text-black font-mono font-bold">
                             <span id="current-time">0:00</span>
                             <span id="total-time">0:00</span>
                         </div>
-                        <div id="progress-container" class="w-full h-2 sm:h-1.5 bg-gray-800/80 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
-                            <div id="progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
+                        <div id="progress-container" class="w-full h-3 bg-white border-2 border-black rounded-full overflow-hidden cursor-pointer relative shadow-[2px_2px_0px_#111]" onclick="seekTrack(event)">
+                            <div id="progress-bar" class="h-full bg-pink w-0 transition-all duration-100 border-r-2 border-black"></div>
                         </div>
                     </div>
 
                     <!-- Controles de Mídia -->
-                    <div class="flex items-center space-x-6 sm:space-x-8 pt-2">
-                        <button onclick="controlPlayback('previous')" class="text-gray-400 hover:text-white transition transform hover:scale-110 p-2">
-                            <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                    <div class="flex items-center space-x-6 pt-2">
+                        <button onclick="controlPlayback('previous')" class="btn btn-secondary p-3 rounded-xl">
+                            <i class="fa-solid fa-backward-step"></i>
                         </button>
-                        <button id="play-pause-btn" onclick="togglePlayPause()" class="w-12 h-12 sm:w-14 sm:h-14 bg-spotify hover:bg-spotify/90 text-black rounded-full flex items-center justify-center transition transform hover:scale-105 shadow-lg shadow-spotify/20">
-                            <svg id="play-icon" class="w-6 h-6 sm:w-7 sm:h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            <svg id="pause-icon" class="w-6 h-6 sm:w-7 sm:h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <button id="play-pause-btn" onclick="togglePlayPause()" class="btn p-4 rounded-full text-lg shadow-[4px_4px_0px_#111]">
+                            <i id="play-icon" class="fa-solid fa-play"></i>
+                            <i id="pause-icon" class="fa-solid fa-pause hidden"></i>
                         </button>
-                        <button onclick="controlPlayback('next')" class="text-gray-400 hover:text-white transition transform hover:scale-110 p-2">
-                            <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                        <button onclick="controlPlayback('next')" class="btn btn-secondary p-3 rounded-xl">
+                            <i class="fa-solid fa-forward-step"></i>
                         </button>
                     </div>
 
                 </div>
 
                 <!-- Painel Lateral de Letras (Modo Split Desktop) -->
-                <div id="split-lyrics-pane" class="hidden flex-col w-full max-w-md h-[420px] relative overflow-hidden px-2">
-                    <div class="flex justify-between items-center pb-3 border-b border-gray-800/60 mb-2">
-                        <span class="text-xs font-bold text-spotify tracking-wider uppercase">Letra Sincronizada</span>
-                        <div class="flex space-x-1 bg-gray-900/40 p-1 rounded-xl border border-gray-800/60 text-xs">
-                            <button onclick="setLyricsMode('karaoke')" class="px-2.5 py-1 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
-                            <button onclick="setLyricsMode('poetry')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
-                            <button onclick="setLyricsMode('minimal')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
+                <div id="split-lyrics-pane" class="card hidden flex-col w-full max-w-md h-[450px] relative overflow-hidden">
+                    <div class="flex justify-between items-center pb-3 border-b-2 border-black mb-2">
+                        <span class="text-xs font-extrabold text-black tracking-wider uppercase bg-yellow px-2 py-1 rounded-md border-2 border-black shadow-[2px_2px_0px_#111]">Letra Sincronizada</span>
+                        <div class="flex space-x-1 bg-gray-100 p-1 rounded-xl border-2 border-black text-xs shadow-[2px_2px_0px_#111]">
+                            <button onclick="setLyricsMode('karaoke')" class="px-2.5 py-1 rounded-lg bg-pink text-white font-extrabold border border-black transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
+                            <button onclick="setLyricsMode('poetry')" class="px-2.5 py-1 rounded-lg font-bold text-black hover:bg-gray-200 transition lyric-mode-btn" data-mode="poetry">Poema</button>
+                            <button onclick="setLyricsMode('minimal')" class="px-2.5 py-1 rounded-lg font-bold text-black hover:bg-gray-200 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
                         </div>
                     </div>
                     <div id="split-lyrics-box" class="flex-1 overflow-y-auto py-32 text-center relative scroll-smooth">
-                        <div id="split-lyrics-content" class="text-gray-500 font-medium text-sm sm:text-base">Aguardando música...</div>
+                        <div id="split-lyrics-content" class="text-gray-500 font-bold text-sm sm:text-base">Aguardando música...</div>
                     </div>
                 </div>
 
@@ -201,41 +313,38 @@
 
     </main>
 
-    <!-- MODAL DE LETRAS EM TELA CHEIA (Totalmente otimizado para mobile) -->
-    <div id="fullscreen-lyrics-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col hidden transition-opacity duration-300">
-        <!-- Barra Superior do Modal -->
-        <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-6 border-b border-gray-800/50 gap-3">
+    <!-- MODAL DE LETRAS EM TELA CHEIA -->
+    <div id="fullscreen-lyrics-modal" class="fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl flex flex-col hidden transition-opacity duration-300 p-4 sm:p-8">
+        <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b-3 border-black gap-3">
             <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-3 w-full sm:w-auto truncate">
-                <span id="fs-track-title" class="font-bold text-base sm:text-lg text-white truncate">Música</span>
-                <span class="hidden sm:inline text-gray-500">•</span>
-                <span id="fs-artist-title" class="text-xs sm:text-sm text-gray-400 truncate">Artista</span>
+                <span id="fs-track-title" class="font-extrabold text-lg text-black truncate">Música</span>
+                <span class="hidden sm:inline text-black font-extrabold">•</span>
+                <span id="fs-artist-title" class="text-xs sm:text-sm text-gray-700 font-bold truncate">Artista</span>
             </div>
 
-            <!-- Seletores de Tipo & Fechar -->
             <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3">
-                <div class="flex space-x-1 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-[11px] sm:text-xs">
-                    <button onclick="setLyricsMode('karaoke')" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
-                    <button onclick="setLyricsMode('poetry')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
-                    <button onclick="setLyricsMode('minimal')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
+                <div class="flex space-x-1 bg-gray-100 p-1 rounded-xl border-2 border-black text-xs shadow-[2px_2px_0px_#111]">
+                    <button onclick="setLyricsMode('karaoke')" class="px-3 py-1.5 rounded-lg bg-pink text-white font-extrabold border border-black transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
+                    <button onclick="setLyricsMode('poetry')" class="px-3 py-1.5 rounded-lg font-bold text-black hover:bg-gray-200 transition lyric-mode-btn" data-mode="poetry">Poema</button>
+                    <button onclick="setLyricsMode('minimal')" class="px-3 py-1.5 rounded-lg font-bold text-black hover:bg-gray-200 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
                 </div>
-                <button onclick="toggleFullscreenLyricsModal(false)" class="p-2 sm:p-2.5 bg-gray-800/80 hover:bg-gray-700 text-white rounded-full transition shadow-lg">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="toggleFullscreenLyricsModal(false)" class="btn btn-secondary p-2.5 rounded-xl">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Área Central da Letra em Tela Cheia -->
         <div id="fs-lyrics-box" class="flex-1 overflow-y-auto py-48 sm:py-64 px-4 text-center relative scroll-smooth flex flex-col items-center">
-            <div id="fs-lyrics-content" class="w-full max-w-xl text-gray-500 font-medium text-sm sm:text-base">Carregando letra...</div>
+            <div id="fs-lyrics-content" class="w-full max-w-xl text-gray-500 font-bold text-sm sm:text-base">Carregando letra...</div>
         </div>
     </div>
 
     <!-- Rodapé -->
-    <footer class="w-full max-w-5xl text-center py-3 text-[11px] sm:text-xs text-gray-500 z-20">
+    <footer class="w-full max-w-5xl text-center py-3 text-xs font-extrabold text-black z-20">
         Spotify Vinyl & LRCLIB Dynamic Integration
     </footer>
 
-    <!-- Lógica JavaScript -->
+    <!-- Lógica JavaScript Mantida Exatamente Como no Original -->
     <script>
         const clientId = 'c17b8a32ee1249ef976034607a115409';
         const redirectUri = window.location.origin + window.location.pathname;
@@ -365,7 +474,7 @@
             document.getElementById('split-toggle-btn').classList.remove('hidden');
             
             document.getElementById('auth-container').innerHTML = `
-                <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-900/60 hover:bg-gray-800 border border-gray-800 px-3 py-1.5 rounded-lg transition">Sair</button>
+                <button onclick="logout()" class="btn btn-secondary text-xs py-1.5 px-3">Sair</button>
             `;
             fetchCurrentPlayback();
             setInterval(fetchCurrentPlayback, 3000);
@@ -408,7 +517,7 @@
             document.getElementById('sleeve-img').src = '';
             document.getElementById('vinyl-center-img').src = '';
             
-            const idleHTML = '<span class="text-gray-500 font-medium">Nenhuma música reproduzindo no momento.</span>';
+            const idleHTML = '<span class="text-gray-500 font-bold">Nenhuma música reproduzindo no momento.</span>';
             document.getElementById('split-lyrics-content').innerHTML = idleHTML;
             document.getElementById('fs-lyrics-content').innerHTML = idleHTML;
 
@@ -467,7 +576,7 @@
         }
 
         async function fetchLyrics(trackName, artistName, albumName, duration) {
-            const loadingHTML = '<span class="text-gray-400 animate-pulse font-medium">Buscando letra sincronizada...</span>';
+            const loadingHTML = '<span class="text-gray-600 animate-pulse font-bold">Buscando letra sincronizada...</span>';
             document.getElementById('split-lyrics-content').innerHTML = loadingHTML;
             document.getElementById('fs-lyrics-content').innerHTML = loadingHTML;
             lyricsData = null;
@@ -477,7 +586,7 @@
                 const response = await fetch(url);
                 
                 if (!response.ok) {
-                    const errHTML = '<span class="text-gray-500">Letra não encontrada para esta faixa.</span>';
+                    const errHTML = '<span class="text-gray-500 font-bold">Letra não encontrada para esta faixa.</span>';
                     document.getElementById('split-lyrics-content').innerHTML = errHTML;
                     document.getElementById('fs-lyrics-content').innerHTML = errHTML;
                     return;
@@ -492,12 +601,12 @@
                     lyricsData = data.plainLyrics.split('\n').map((text, idx) => ({ time: idx * 3000, text }));
                     renderLyricsHTML();
                 } else {
-                    const instHTML = '<span class="text-gray-500">Letra instrumental ou indisponível.</span>';
+                    const instHTML = '<span class="text-gray-500 font-bold">Letra instrumental ou indisponível.</span>';
                     document.getElementById('split-lyrics-content').innerHTML = instHTML;
                     document.getElementById('fs-lyrics-content').innerHTML = instHTML;
                 }
             } catch (err) {
-                const errHTML = '<span class="text-gray-500">Erro ao carregar a letra.</span>';
+                const errHTML = '<span class="text-gray-500 font-bold">Erro ao carregar a letra.</span>';
                 document.getElementById('split-lyrics-content').innerHTML = errHTML;
                 document.getElementById('fs-lyrics-content').innerHTML = errHTML;
             }
@@ -527,7 +636,7 @@
 
             let html = '<div class="space-y-6 py-4">';
             lyricsData.forEach((item, index) => {
-                html += `<p id="lyric-line-${index}" class="lyric-item transition-all duration-300 text-gray-500 text-sm sm:text-base font-medium leading-relaxed">${item.text || '&bull;&bull;&bull;'}</p>`;
+                html += `<p id="lyric-line-${index}" class="lyric-item transition-all duration-300 text-gray-500 text-sm sm:text-base font-bold leading-relaxed">${item.text || '&bull;&bull;&bull;'}</p>`;
             });
             html += '</div>';
 
@@ -555,7 +664,7 @@
                 elements.forEach(lineEl => {
                     if (currentLyricsMode === 'minimal') {
                         if (i === activeIndex) {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-bold text-xl sm:text-2xl scale-105 my-8';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-pink font-extrabold text-xl sm:text-2xl scale-105 my-8';
                             lineEl.style.display = 'block';
                         } else {
                             lineEl.style.display = 'none';
@@ -563,18 +672,18 @@
                     } else if (currentLyricsMode === 'poetry') {
                         lineEl.style.display = 'block';
                         if (i === activeIndex) {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-semibold text-sm sm:text-base my-2 scale-102';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-pink font-extrabold text-sm sm:text-base my-2';
                         } else {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-400 text-xs sm:text-sm my-2';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-400 text-xs sm:text-sm my-2 font-bold';
                         }
                     } else {
                         lineEl.style.display = 'block';
                         if (i === activeIndex) {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-extrabold text-base sm:text-lg my-4 scale-105 drop-shadow-[0_0_12px_rgba(29,185,84,0.4)]';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-black font-extrabold text-base sm:text-lg my-4 scale-105 bg-yellow px-2 py-1 rounded border-2 border-black inline-block shadow-[2px_2px_0px_#111]';
                         } else if (Math.abs(i - activeIndex) === 1) {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-300 text-sm sm:text-base font-medium my-2 opacity-80';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-800 text-sm sm:text-base font-bold my-2 opacity-80';
                         } else {
-                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-600 text-xs sm:text-sm font-medium my-2 opacity-30';
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-400 text-xs sm:text-sm font-bold my-2 opacity-40';
                         }
                     }
                 });
@@ -599,9 +708,11 @@
             currentLyricsMode = mode;
             document.querySelectorAll('.lyric-mode-btn').forEach(btn => {
                 if (btn.dataset.mode === mode) {
-                    btn.classList.add('bg-gray-800');
+                    btn.classList.add('bg-pink', 'text-white');
+                    btn.classList.remove('hover:bg-gray-200');
                 } else {
-                    btn.classList.remove('bg-gray-800');
+                    btn.classList.remove('bg-pink', 'text-white');
+                    btn.classList.add('hover:bg-gray-200');
                 }
             });
             highlightCurrentLyric(trackProgress);
@@ -755,8 +866,13 @@
             if (theme === 'cyber') vinyl.classList.add('vinyl-cyber');
 
             document.querySelectorAll('.theme-btn').forEach(btn => {
-                if (btn.dataset.theme === theme) btn.classList.add('bg-gray-800');
-                else btn.classList.remove('bg-gray-800');
+                if (btn.dataset.theme === theme) {
+                    btn.classList.add('bg-pink', 'text-white');
+                    btn.classList.remove('hover:bg-gray-200');
+                } else {
+                    btn.classList.remove('bg-pink', 'text-white');
+                    btn.classList.add('hover:bg-gray-200');
+                }
             });
         }
     </script>
