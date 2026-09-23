@@ -58,7 +58,7 @@
                 #110022 4px
             );
         }
-        /* Scrollbars customizadas */
+        /* Scrollbars customizadas invisíveis/leves */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -67,18 +67,18 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(29, 185, 84, 0.6);
+            background: rgba(29, 185, 84, 0.5);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-spotify selection:text-black">
 
     <!-- Cabeçalho -->
-    <header class="w-full max-w-5xl flex justify-between items-center py-4 px-4">
+    <header class="w-full max-w-5xl flex justify-between items-center py-4 px-4 z-25">
         <div class="flex items-center space-x-2">
             <svg class="w-8 h-8 text-spotify" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.421.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.24 1.08zm1.44-3.9c-.301.42-.841.6-1.261.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.2-1.26 9.6-0.6 13.38 1.68.48.3.6.9.36 1.38zm.12-4.08C13.92 7.08 8.1 6.9 4.8 7.92c-.6.18-1.2-.18-1.38-.78-.18-.6.18-1.2.78-1.38 3.84-1.2 10.38-0.96 14.7 1.62.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
@@ -88,14 +88,14 @@
         
         <!-- Controles do Header -->
         <div class="flex items-center space-x-3">
-            <!-- Botão de Alternar Divisão de Tela (Lado a Lado) -->
-            <button id="split-toggle-btn" onclick="toggleSplitLayout()" class="hidden text-xs bg-gray-800/80 hover:bg-gray-700 text-gray-300 px-3 py-2 rounded-xl transition border border-gray-700/50 flex items-center space-x-1.5" title="Dividir tela com letras">
+            <!-- Botão de Alternar Divisão de Tela -->
+            <button id="split-toggle-btn" onclick="toggleSplitLayout()" class="hidden text-xs bg-gray-900/60 hover:bg-gray-800 text-gray-300 px-3 py-2 rounded-xl transition border border-gray-800 flex items-center space-x-1.5 shadow-sm" title="Dividir tela com letras">
                 <svg class="w-4 h-4 text-spotify" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4H5a2 2 0 00-2 2v12a2 2 0 002 2h4m10-16h4a2 2 0 012 2v12a2 2 0 01-2 2h-4m-10 0V4m10 0v16"></path></svg>
                 <span id="split-btn-text">Dividir Tela</span>
             </button>
 
             <!-- Botão de Letras em Tela Cheia -->
-            <button id="fullscreen-lyrics-trigger" onclick="toggleFullscreenLyricsModal(true)" class="hidden p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-spotify transition shadow-md flex items-center justify-center" title="Abrir Letras em Tela Cheia">
+            <button id="fullscreen-lyrics-trigger" onclick="toggleFullscreenLyricsModal(true)" class="hidden p-2.5 rounded-xl bg-gray-900/60 hover:bg-gray-800 text-spotify transition shadow-sm border border-gray-800 flex items-center justify-center" title="Abrir Letras em Tela Cheia">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
             </button>
 
@@ -107,7 +107,7 @@
     <main class="w-full max-w-5xl flex flex-col items-center justify-center my-auto space-y-6">
         
         <!-- Estado Desconectado -->
-        <div id="login-screen" class="text-center py-14 px-8 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl max-w-md w-full">
+        <div id="login-screen" class="text-center py-14 px-8 max-w-md w-full">
             <div class="w-20 h-20 bg-spotify/10 rounded-full flex items-center justify-center mx-auto mb-6 text-spotify">
                 <svg class="w-10 h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             </div>
@@ -121,17 +121,17 @@
         <!-- Estado Conectado / Player -->
         <div id="player-screen" class="w-full flex flex-col items-center justify-center hidden py-4">
             
-            <!-- Contêiner Dinâmico (Muda de Centralizado para Lado a Lado conforme o botão) -->
-            <div id="player-layout-container" class="flex flex-col items-center justify-center w-full max-w-md transition-all duration-300">
+            <!-- Contêiner Dinâmico (Livre de caixas/containers visuais) -->
+            <div id="player-layout-container" class="flex flex-col items-center justify-center w-full max-w-md transition-all duration-300 gap-8">
                 
-                <!-- Player & Vinil -->
-                <div class="flex flex-col items-center space-y-6 w-full max-w-md bg-gray-900/40 p-6 rounded-3xl border border-gray-800/80 shadow-2xl backdrop-blur-md">
+                <!-- Player & Vinil (Sem Box) -->
+                <div class="flex flex-col items-center space-y-6 w-full max-w-md">
                     
                     <!-- Seletores de Tema do Vinil -->
-                    <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs">
-                        <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Clássico</button>
-                        <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Dourado</button>
-                        <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="cyber">Cyberpunk</button>
+                    <div class="flex space-x-2 bg-gray-900/40 p-1 rounded-xl border border-gray-800/60 text-xs">
+                        <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 transition theme-btn" data-theme="classic">Clássico</button>
+                        <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition theme-btn" data-theme="gold">Dourado</button>
+                        <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition theme-btn" data-theme="cyber">Cyberpunk</button>
                     </div>
 
                     <!-- Palco do Vinil -->
@@ -159,7 +159,7 @@
                             <span id="current-time">0:00</span>
                             <span id="total-time">0:00</span>
                         </div>
-                        <div id="progress-container" class="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
+                        <div id="progress-container" class="w-full h-1.5 bg-gray-800/80 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
                             <div id="progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
                         </div>
                     </div>
@@ -180,11 +180,11 @@
 
                 </div>
 
-                <!-- Painel Lateral de Letras (Aparece apenas quando o Split Mode estiver ativo) -->
-                <div id="split-lyrics-pane" class="hidden flex-col w-full max-w-md h-[460px] bg-gray-900/50 backdrop-blur-xl border border-gray-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                    <div class="flex justify-between items-center pb-3 border-b border-gray-800">
+                <!-- Painel Lateral de Letras (Modo Split sem box) -->
+                <div id="split-lyrics-pane" class="hidden flex-col w-full max-w-md h-[420px] relative overflow-hidden">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-800/60 mb-2">
                         <span class="text-xs font-bold text-spotify tracking-wider uppercase">Letra Sincronizada</span>
-                        <div class="flex space-x-1 bg-black/40 p-1 rounded-xl border border-gray-800 text-xs">
+                        <div class="flex space-x-1 bg-gray-900/40 p-1 rounded-xl border border-gray-800/60 text-xs">
                             <button onclick="setLyricsMode('karaoke')" class="px-2.5 py-1 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
                             <button onclick="setLyricsMode('poetry')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
                             <button onclick="setLyricsMode('minimal')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
@@ -201,9 +201,9 @@
 
     </main>
 
-    <!-- MODAL DE LETRAS EM TELA CHEIA -->
+    <!-- MODAL DE LETRAS EM TELA CHEIA (Também sem caixas, foco total) -->
     <div id="fullscreen-lyrics-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col hidden transition-opacity duration-300">
-        <div class="w-full flex justify-between items-center p-6 border-b border-gray-800/80">
+        <div class="w-full flex justify-between items-center p-6 border-b border-gray-800/50">
             <div class="flex items-center space-x-3">
                 <span id="fs-track-title" class="font-bold text-lg text-white truncate max-w-xs">Música</span>
                 <span class="text-gray-500">•</span>
@@ -211,12 +211,12 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <div class="hidden sm:flex space-x-1 bg-gray-900 p-1 rounded-xl border border-gray-800 text-xs">
+                <div class="hidden sm:flex space-x-1 bg-gray-900/60 p-1 rounded-xl border border-gray-800 text-xs">
                     <button onclick="setLyricsMode('karaoke')" class="px-3 py-1.5 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
                     <button onclick="setLyricsMode('poetry')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
                     <button onclick="setLyricsMode('minimal')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
                 </div>
-                <button onclick="toggleFullscreenLyricsModal(false)" class="p-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-full transition shadow-lg">
+                <button onclick="toggleFullscreenLyricsModal(false)" class="p-2.5 bg-gray-800/80 hover:bg-gray-700 text-white rounded-full transition shadow-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -228,7 +228,7 @@
     </div>
 
     <!-- Rodapé -->
-    <footer class="w-full max-w-5xl text-center py-4 text-xs text-gray-500">
+    <footer class="w-full max-w-5xl text-center py-4 text-xs text-gray-500 z-20">
         Spotify Vinyl & LRCLIB Dynamic Integration
     </footer>
 
@@ -362,7 +362,7 @@
             document.getElementById('split-toggle-btn').classList.remove('hidden');
             
             document.getElementById('auth-container').innerHTML = `
-                <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-800/80 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition">Sair</button>
+                <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-900/60 hover:bg-gray-800 border border-gray-800 px-3 py-1.5 rounded-lg transition">Sair</button>
             `;
             fetchCurrentPlayback();
             setInterval(fetchCurrentPlayback, 3000);
@@ -612,13 +612,13 @@
 
             if (isSplitLayoutActive) {
                 container.classList.remove('max-w-md');
-                container.classList.add('max-w-4xl', 'lg:flex-row', 'lg:space-x-6');
+                container.classList.add('max-w-4xl', 'lg:flex-row', 'lg:space-x-12');
                 splitPane.classList.remove('hidden');
                 splitPane.classList.add('flex');
                 btnText.innerText = 'Ocultar Divisão';
                 setTimeout(() => highlightCurrentLyric(trackProgress), 100);
             } else {
-                container.classList.remove('max-w-4xl', 'lg:flex-row', 'lg:space-x-6');
+                container.classList.remove('max-w-4xl', 'lg:flex-row', 'lg:space-x-12');
                 container.classList.add('max-w-md');
                 splitPane.classList.remove('flex');
                 splitPane.classList.add('hidden');
