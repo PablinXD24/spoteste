@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Vinyl Player com Letras</title>
+    <title>Spotify Vinyl Player</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -58,14 +58,6 @@
                 #110022 4px
             );
         }
-        /* Estilização da Caixa de Letras */
-        .lyrics-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .lyrics-container::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-spotify selection:text-black">
@@ -78,11 +70,13 @@
             </svg>
             <span class="font-bold text-lg tracking-wider">VinylPlayer</span>
         </div>
-        <div id="auth-container"></div>
+        <div id="auth-container">
+            <!-- Inserido dinamicamente via JS -->
+        </div>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="w-full max-w-md flex flex-col items-center justify-center my-auto space-y-5">
+    <main class="w-full max-w-md flex flex-col items-center justify-center my-auto space-y-6">
         
         <!-- Estado Desconectado -->
         <div id="login-screen" class="text-center py-12 px-6 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl w-full">
@@ -90,20 +84,15 @@
                 <svg class="w-10 h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             </div>
             <h2 class="text-2xl font-bold mb-2">Conecte sua conta</h2>
-            <p class="text-gray-400 text-sm mb-6">Ouça suas músicas, veja o vinil rodar e acompanhe as letras em tempo real.</p>
+            <p class="text-gray-400 text-sm mb-6">Ouça suas músicas no Spotify e veja o vinil girar em tempo real na tela.</p>
             <button id="login-btn" class="w-full bg-spotify hover:bg-spotify/90 text-black font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-spotify/20 flex items-center justify-center space-x-2">
                 <span>Conectar com o Spotify</span>
             </button>
         </div>
 
         <!-- Estado Conectado / Player -->
-        <div id="player-screen" class="w-full flex flex-col items-center space-y-4 hidden">
+        <div id="player-screen" class="w-full flex flex-col items-center space-y-6 hidden">
             
-            <!-- Aviso de Dispositivo Inativo -->
-            <div id="device-warning" class="hidden w-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs py-2 px-3 rounded-xl text-center">
-                Nenhum dispositivo ativo encontrado. Abra o app do Spotify em algum aparelho!
-            </div>
-
             <!-- Seletor de Estilo do Vinil -->
             <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs">
                 <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Clássico</button>
@@ -112,13 +101,15 @@
             </div>
 
             <!-- Palco do Vinil -->
-            <div class="relative w-72 h-72 flex items-center justify-center my-1">
-                <!-- Capa do Álbum -->
+            <div class="relative w-72 h-72 flex items-center justify-center my-2">
+                <!-- Capa do Álbum saindo levemente para o lado (Efeito Capa de Disco) -->
                 <div id="album-sleeve" class="absolute left-0 w-60 h-60 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-6 rotate-[-4deg]">
                     <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
                 </div>
+
                 <!-- O Disco de Vinil -->
                 <div id="vinyl-record" class="absolute right-0 w-64 h-64 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
+                    <!-- Selo Central do Vinil -->
                     <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
                         <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
                         <div class="absolute w-4 h-4 bg-gray-950 rounded-full border border-gray-700"></div>
@@ -157,17 +148,16 @@
                 </button>
             </div>
 
-            <!-- PAINEL DE LETRAS DA MÚSICA -->
-            <div class="w-full pt-1">
-                <button onclick="toggleLyrics()" class="w-full py-2.5 bg-gray-900/80 hover:bg-gray-800 rounded-xl text-xs font-semibold text-spotify border border-gray-800 transition flex items-center justify-center space-x-2 shadow-md">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-                    <span id="lyrics-btn-text">Ver Letra da Música</span>
-                    <svg id="lyrics-arrow" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+            <!-- Painel Expansível / Letras ou Extras -->
+            <div class="w-full pt-2">
+                <button onclick="toggleDetails()" class="w-full py-2 bg-gray-900/40 hover:bg-gray-800/60 rounded-xl text-xs text-gray-400 border border-gray-800/60 transition flex items-center justify-center space-x-1">
+                    <span id="details-text">Ver detalhes da faixa</span>
+                    <svg id="details-arrow" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                
-                <!-- Caixa Desplegável de Letras -->
-                <div id="lyrics-panel" class="hidden mt-2 p-4 bg-gray-900/90 rounded-2xl border border-gray-800 text-sm text-gray-300 h-56 overflow-y-auto lyrics-container space-y-3 relative shadow-inner">
-                    <div id="lyrics-content" class="text-center py-10 text-gray-500 font-medium">Carregando letra...</div>
+                <div id="details-panel" class="hidden mt-2 p-4 bg-gray-900/60 rounded-xl border border-gray-800 text-xs text-gray-300 space-y-2 font-mono">
+                    <p id="detail-album">Álbum: --</p>
+                    <p id="detail-device">Dispositivo: --</p>
+                    <p id="detail-popularity">Popularidade: --</p>
                 </div>
             </div>
 
@@ -176,11 +166,11 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="w-full max-w-md text-center py-3 text-xs text-gray-500">
-        Spotify API & LRCLIB Lyrics Integration
+    <footer class="w-full max-w-md text-center py-4 text-xs text-gray-500">
+        Desenvolvido com Spotify API & GitHub Pages
     </footer>
 
-    <!-- Lógica JavaScript -->
+    <!-- Lógica JavaScript (PKCE + Player) -->
     <script>
         const clientId = 'c17b8a32ee1249ef976034607a115409';
         const redirectUri = window.location.origin + window.location.pathname;
@@ -189,21 +179,23 @@
         let accessToken = localStorage.getItem('spotify_access_token');
         let refreshToken = localStorage.getItem('spotify_refresh_token');
         let tokenExpiry = localStorage.getItem('spotify_token_expiry');
+        let currentTrackUri = null;
         let isPlayingState = false;
         let progressInterval = null;
         let trackDuration = 0;
         let trackProgress = 0;
-        let currentTrackId = null;
-        let lyricsData = null;
 
+        // Início da aplicação
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
 
             if (code) {
+                // Remove o código da URL para limpeza
                 window.history.replaceState({}, document.title, redirectUri);
                 await exchangeCodeForToken(code);
             } else if (accessToken) {
+                // Verifica se o token expirou
                 if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
                     await refreshAccessToken();
                 } else {
@@ -241,7 +233,10 @@
 
         async function exchangeCodeForToken(code) {
             const codeVerifier = localStorage.getItem('spotify_code_verifier');
-            if (!codeVerifier) { showLogin(); return; }
+            if (!codeVerifier) {
+                showLogin();
+                return;
+            }
 
             try {
                 const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -255,16 +250,26 @@
                         code_verifier: codeVerifier,
                     }),
                 });
+
                 const data = await response.json();
                 if (data.access_token) {
                     saveTokens(data);
                     showPlayer();
-                } else { showLogin(); }
-            } catch (err) { showLogin(); }
+                } else {
+                    showLogin();
+                }
+            } catch (err) {
+                console.error('Erro ao trocar token:', err);
+                showLogin();
+            }
         }
 
         async function refreshAccessToken() {
-            if (!refreshToken) { showLogin(); return; }
+            if (!refreshToken) {
+                showLogin();
+                return;
+            }
+
             try {
                 const response = await fetch('https://accounts.spotify.com/api/token', {
                     method: 'POST',
@@ -275,9 +280,17 @@
                         refresh_token: refreshToken,
                     }),
                 });
+
                 const data = await response.json();
-                if (data.access_token) { saveTokens(data); } else { showLogin(); }
-            } catch (err) { showLogin(); }
+                if (data.access_token) {
+                    saveTokens(data);
+                } else {
+                    showLogin();
+                }
+            } catch (err) {
+                console.error('Erro ao atualizar token:', err);
+                showLogin();
+            }
         }
 
         function saveTokens(data) {
@@ -302,11 +315,14 @@
         function showPlayer() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('player-screen').classList.remove('hidden');
+            
+            // Renderiza botão de logout no header
             document.getElementById('auth-container').innerHTML = `
                 <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-800/80 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition">Sair</button>
             `;
+
             fetchCurrentPlayback();
-            setInterval(fetchCurrentPlayback, 3000);
+            setInterval(fetchCurrentPlayback, 3000); // Consulta a cada 3 segundos
         }
 
         function logout() {
@@ -333,7 +349,6 @@
                 }
 
                 const data = await response.json();
-                document.getElementById('device-warning').classList.add('hidden');
                 updatePlayerUI(data);
             } catch (err) {
                 console.error('Erro ao buscar player:', err);
@@ -346,15 +361,12 @@
             document.getElementById('vinyl-record').classList.add('paused');
             document.getElementById('sleeve-img').src = '';
             document.getElementById('vinyl-center-img').src = '';
-            document.getElementById('lyrics-content').innerHTML = '<span class="text-gray-500">Nenhuma música reproduzindo no momento.</span>';
-            document.getElementById('device-warning').classList.remove('hidden');
             isPlayingState = false;
-            currentTrackId = null;
             updatePlayPauseIcon(false);
             clearInterval(progressInterval);
         }
 
-        async function updatePlayerUI(data) {
+        function updatePlayerUI(data) {
             if (!data || !data.item) {
                 setIdleState();
                 return;
@@ -363,11 +375,6 @@
             const track = data.item;
             const isPlaying = data.is_playing;
             isPlayingState = isPlaying;
-
-            if (currentTrackId !== track.id) {
-                currentTrackId = track.id;
-                await fetchLyrics(track.name, track.artists[0].name, track.album.name, Math.floor(track.duration_ms / 1000));
-            }
 
             document.getElementById('track-name').innerText = track.name;
             document.getElementById('artist-name').innerText = track.artists.map(a => a.name).join(', ');
@@ -378,6 +385,7 @@
                 document.getElementById('vinyl-center-img').src = albumImg;
             }
 
+            // Controle da animação do vinil
             const vinyl = document.getElementById('vinyl-record');
             if (isPlaying) {
                 vinyl.classList.remove('paused');
@@ -387,6 +395,7 @@
 
             updatePlayPauseIcon(isPlaying);
 
+            // Barra de progresso
             trackDuration = track.duration_ms;
             trackProgress = data.progress_ms;
             updateProgressUI();
@@ -397,92 +406,10 @@
                 clearInterval(progressInterval);
             }
 
-            highlightCurrentLyric(trackProgress);
-        }
-
-        async function fetchLyrics(trackName, artistName, albumName, duration) {
-            const container = document.getElementById('lyrics-content');
-            container.innerHTML = '<span class="text-gray-400 animate-pulse">Buscando letra...</span>';
-            lyricsData = null;
-
-            try {
-                const url = `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artistName)}&track_name=${encodeURIComponent(trackName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`;
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    container.innerHTML = '<span class="text-gray-500">Letra não encontrada para esta faixa.</span>';
-                    return;
-                }
-
-                const data = await response.json();
-                
-                if (data.syncedLyrics) {
-                    lyricsData = parseLrc(data.syncedLyrics);
-                    renderLyricsHTML();
-                } else if (data.plainLyrics) {
-                    container.innerHTML = `<p class="whitespace-pre-line text-gray-300 leading-relaxed">${data.plainLyrics}</p>`;
-                } else {
-                    container.innerHTML = '<span class="text-gray-500">Letra instrumental ou indisponível.</span>';
-                }
-            } catch (err) {
-                container.innerHTML = '<span class="text-gray-500">Erro ao carregar a letra.</span>';
-            }
-        }
-
-        function parseLrc(lrcString) {
-            const lines = lrcString.split('\n');
-            const parsed = [];
-            const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
-
-            for (let line of lines) {
-                const match = timeReg.exec(line);
-                if (match) {
-                    const mins = parseInt(match[1], 10);
-                    const secs = parseInt(match[2], 10);
-                    const ms = parseInt(match[3].padEnd(3, '0'), 10);
-                    const totalMs = (mins * 60 + secs) * 1000 + ms;
-                    const text = line.replace(timeReg, '').trim();
-                    parsed.push({ time: totalMs, text: text });
-                }
-            }
-            return parsed;
-        }
-
-        function renderLyricsHTML() {
-            const container = document.getElementById('lyrics-content');
-            if (!lyricsData || lyricsData.length === 0) return;
-
-            let html = '<div class="space-y-4 py-6">';
-            lyricsData.forEach((item, index) => {
-                html += `<p id="lyric-line-${index}" class="transition-all duration-300 text-gray-500 text-sm font-medium">${item.text || '...'}</p>`;
-            });
-            html += '</div>';
-            container.innerHTML = html;
-        }
-
-        function highlightCurrentLyric(currentTimeMs) {
-            if (!lyricsData || lyricsData.length === 0) return;
-
-            let activeIndex = -1;
-            for (let i = 0; i < lyricsData.length; i++) {
-                if (currentTimeMs >= lyricsData[i].time) {
-                    activeIndex = i;
-                } else {
-                    break;
-                }
-            }
-
-            for (let i = 0; i < lyricsData.length; i++) {
-                const lineEl = document.getElementById(`lyric-line-${i}`);
-                if (!lineEl) continue;
-
-                if (i === activeIndex) {
-                    lineEl.className = 'transition-all duration-300 text-spotify font-bold text-base scale-105';
-                    lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    lineEl.className = 'transition-all duration-300 text-gray-500 text-sm font-medium';
-                }
-            }
+            // Detalhes extras
+            document.getElementById('detail-album').innerText = `Álbum: ${track.album.name}`;
+            document.getElementById('detail-device').innerText = `Dispositivo: ${data.device?.name || 'Padrão'} (${data.device?.type || ''})`;
+            document.getElementById('detail-popularity').innerText = `Popularidade: ${track.popularity}/100`;
         }
 
         function updatePlayPauseIcon(isPlaying) {
@@ -504,7 +431,6 @@
                     trackProgress += 1000;
                     if (trackProgress > trackDuration) trackProgress = trackDuration;
                     updateProgressUI();
-                    highlightCurrentLyric(trackProgress);
                 }
             }, 1000);
         }
@@ -526,6 +452,7 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
+        // Controle de Reprodução (Play/Pause/Skip)
         async function togglePlayPause() {
             const endpoint = isPlayingState ? 'pause' : 'play';
             try {
@@ -533,12 +460,14 @@
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                if (response.status === 404) {
-                    document.getElementById('device-warning').classList.remove('hidden');
+                if (response.status === 401) {
+                    await refreshAccessToken();
                     return;
                 }
                 setTimeout(fetchCurrentPlayback, 400);
-            } catch (err) { console.error(err); }
+            } catch (err) {
+                console.error('Erro ao alternar play/pause:', err);
+            }
         }
 
         async function controlPlayback(action) {
@@ -547,19 +476,23 @@
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                if (response.status === 404) {
-                    document.getElementById('device-warning').classList.remove('hidden');
+                if (response.status === 401) {
+                    await refreshAccessToken();
                     return;
                 }
                 setTimeout(fetchCurrentPlayback, 500);
-            } catch (err) { console.error(err); }
+            } catch (err) {
+                console.error(`Erro ao executar ${action}:`, err);
+            }
         }
 
+        // Seek interativo na barra
         async function seekTrack(event) {
             const container = document.getElementById('progress-container');
             const rect = container.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
-            const percentage = clickX / rect.width;
+            const width = rect.width;
+            const percentage = clickX / width;
             const seekPos = Math.floor(trackDuration * percentage);
 
             try {
@@ -570,11 +503,13 @@
                 if (response.ok) {
                     trackProgress = seekPos;
                     updateProgressUI();
-                    highlightCurrentLyric(trackProgress);
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) {
+                console.error('Erro ao buscar posição na música:', err);
+            }
         }
 
+        // Temas do Vinil
         function setTheme(theme) {
             const vinyl = document.getElementById('vinyl-record');
             vinyl.classList.remove('vinyl-grooves', 'vinyl-gold', 'vinyl-cyber');
@@ -584,23 +519,27 @@
             if (theme === 'cyber') vinyl.classList.add('vinyl-cyber');
 
             document.querySelectorAll('.theme-btn').forEach(btn => {
-                if (btn.dataset.theme === theme) btn.classList.add('bg-gray-800');
-                else btn.classList.remove('bg-gray-800');
+                if (btn.dataset.theme === theme) {
+                    btn.classList.add('bg-gray-800');
+                } else {
+                    btn.classList.remove('bg-gray-800');
+                }
             });
         }
 
-        function toggleLyrics() {
-            const panel = document.getElementById('lyrics-panel');
-            const arrow = document.getElementById('lyrics-arrow');
-            const text = document.getElementById('lyrics-btn-text');
+        // Painel de Detalhes
+        function toggleDetails() {
+            const panel = document.getElementById('details-panel');
+            const arrow = document.getElementById('details-arrow');
+            const text = document.getElementById('details-text');
 
             panel.classList.toggle('hidden');
             arrow.classList.toggle('rotate-180');
             
             if (panel.classList.contains('hidden')) {
-                text.innerText = 'Ver Letra da Música';
+                text.innerText = 'Ver detalhes da faixa';
             } else {
-                text.innerText = 'Ocultar Letra';
+                text.innerText = 'Ocultar detalhes';
             }
         }
     </script>
