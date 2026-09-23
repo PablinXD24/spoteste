@@ -58,115 +58,122 @@
                 #110022 4px
             );
         }
-        /* Estilização personalizada para scrollbar imersiva */
-        .immersive-lyrics-box::-webkit-scrollbar {
-            width: 6px;
+        /* Scrollbars customizadas */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
         }
-        .immersive-lyrics-box::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .immersive-lyrics-box::-webkit-scrollbar-thumb {
-            background: rgba(29, 185, 84, 0.4);
-            border-radius: 8px;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
         }
-        .immersive-lyrics-box::-webkit-scrollbar-thumb:hover {
-            background: rgba(29, 185, 84, 0.8);
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(29, 185, 84, 0.6);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-spotify selection:text-black">
 
     <!-- Cabeçalho -->
-    <header class="w-full max-w-lg flex justify-between items-center py-4 px-2">
+    <header class="w-full max-w-5xl flex justify-between items-center py-4 px-4">
         <div class="flex items-center space-x-2">
             <svg class="w-8 h-8 text-spotify" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.421.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.24 1.08zm1.44-3.9c-.301.42-.841.6-1.261.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.2-1.26 9.6-0.6 13.38 1.68.48.3.6.9.36 1.38zm.12-4.08C13.92 7.08 8.1 6.9 4.8 7.92c-.6.18-1.2-.18-1.38-.78-.18-.6.18-1.2.78-1.38 3.84-1.2 10.38-0.96 14.7 1.62.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
             </svg>
             <span class="font-bold text-lg tracking-wider">VinylPlayer</span>
         </div>
-        <div id="auth-container"></div>
+        
+        <!-- Controles do Header (Botão Tela Cheia de Letras + Auth) -->
+        <div class="flex items-center space-x-3">
+            <button id="fullscreen-lyrics-trigger" onclick="toggleFullscreenLyricsModal(true)" class="hidden p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-spotify transition shadow-md flex items-center justify-center" title="Abrir Letras em Tela Cheia">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+            </button>
+            <div id="auth-container"></div>
+        </div>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="w-full max-w-lg flex flex-col items-center justify-center my-auto space-y-6">
+    <main class="w-full max-w-5xl flex flex-col items-center justify-center my-auto space-y-6">
         
         <!-- Estado Desconectado -->
-        <div id="login-screen" class="text-center py-14 px-8 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl w-full">
+        <div id="login-screen" class="text-center py-14 px-8 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl max-w-md w-full">
             <div class="w-20 h-20 bg-spotify/10 rounded-full flex items-center justify-center mx-auto mb-6 text-spotify">
                 <svg class="w-10 h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             </div>
             <h2 class="text-2xl font-bold mb-2">Conecte sua conta</h2>
-            <p class="text-gray-400 text-sm mb-6">Experimente o disco de vinil interativo e a experiência visual de letras em tempo real.</p>
+            <p class="text-gray-400 text-sm mb-6">Experimente o vinil interativo e as opções avanzadas de letras sincronizadas.</p>
             <button id="login-btn" class="w-full bg-spotify hover:bg-spotify/90 text-black font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-spotify/20 flex items-center justify-center space-x-2">
                 <span>Conectar com o Spotify</span>
             </button>
         </div>
 
-        <!-- Estado Conectado / Player -->
-        <div id="player-screen" class="w-full flex flex-col items-center space-y-6 hidden">
+        <!-- Estado Conectado / Player (Layout Split-Screen Lado a Lado) -->
+        <div id="player-screen" class="w-full flex flex-col lg:flex-row items-center justify-center gap-8 hidden py-4">
             
-            <!-- Seletores de Tema do Vinil -->
-            <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs shadow-inner">
-                <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Vinil Clássico</button>
-                <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Vinil Dourado</button>
-                <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="cyber">Cyberpunk</button>
-            </div>
-
-            <!-- Palco do Vinil -->
-            <div class="relative w-72 h-72 flex items-center justify-center my-2">
-                <div id="album-sleeve" class="absolute left-0 w-60 h-60 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-6 rotate-[-4deg]">
-                    <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
-                </div>
-                <div id="vinyl-record" class="absolute right-0 w-64 h-64 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
-                    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
-                        <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
-                        <div class="absolute w-4 h-4 bg-gray-950 rounded-full border border-gray-700"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Informações da Música -->
-            <div class="w-full text-center space-y-1 px-4">
-                <h3 id="track-name" class="text-xl font-bold truncate text-white">Nenhuma música tocando</h3>
-                <p id="artist-name" class="text-sm text-gray-400 truncate">Abra o Spotify e dê play em alguma faixa</p>
-            </div>
-
-            <!-- Barra de Progresso Interativa -->
-            <div class="w-full space-y-1 px-2">
-                <div class="flex justify-between text-xs text-gray-400 font-mono">
-                    <span id="current-time">0:00</span>
-                    <span id="total-time">0:00</span>
-                </div>
-                <div id="progress-container" class="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
-                    <div id="progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
-                </div>
-            </div>
-
-            <!-- Controles de Mídia -->
-            <div class="flex items-center space-x-6">
-                <button onclick="controlPlayback('previous')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
-                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-                </button>
-                <button id="play-pause-btn" onclick="togglePlayPause()" class="w-14 h-14 bg-spotify hover:bg-spotify/90 text-black rounded-full flex items-center justify-center transition transform hover:scale-105 shadow-lg shadow-spotify/20">
-                    <svg id="play-icon" class="w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    <svg id="pause-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                </button>
-                <button onclick="controlPlayback('next')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
-                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-                </button>
-            </div>
-
-            <!-- PAINEL DE LETRAS IMERSIVO E ESTILIZADO -->
-            <div class="w-full bg-gradient-to-b from-gray-900/90 to-gray-950/95 backdrop-blur-xl border border-gray-800/80 rounded-2xl p-5 shadow-2xl space-y-4">
+            <!-- Coluna Esquerda: Player & Vinil -->
+            <div class="flex flex-col items-center space-y-6 w-full max-w-md bg-gray-900/40 p-6 rounded-3xl border border-gray-800/80 shadow-2xl backdrop-blur-md">
                 
-                <!-- Cabeçalho e Seletores de Estilo de Letras -->
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 border-b border-gray-800 pb-3">
-                    <div class="flex items-center space-x-2 text-spotify font-bold text-sm tracking-wide">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-                        <span>Experiência de Letras</span>
+                <!-- Seletores de Tema do Vinil -->
+                <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs">
+                    <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Clássico</button>
+                    <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Dourado</button>
+                    <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="cyber">Cyberpunk</button>
+                </div>
+
+                <!-- Palco do Vinil -->
+                <div class="relative w-64 h-64 flex items-center justify-center my-2">
+                    <div id="album-sleeve" class="absolute left-0 w-52 h-52 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-5 rotate-[-4deg]">
+                        <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
                     </div>
-                    <!-- Modos de Exibição -->
+                    <div id="vinyl-record" class="absolute right-0 w-56 h-56 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
+                        <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
+                            <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
+                            <div class="absolute w-3.5 h-3.5 bg-gray-950 rounded-full border border-gray-700"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações da Música -->
+                <div class="w-full text-center space-y-1 px-2">
+                    <h3 id="track-name" class="text-lg font-bold truncate text-white">Nenhuma música tocando</h3>
+                    <p id="artist-name" class="text-sm text-gray-400 truncate">Abra o Spotify e dê play</p>
+                </div>
+
+                <!-- Barra de Progresso -->
+                <div class="w-full space-y-1 px-2">
+                    <div class="flex justify-between text-xs text-gray-400 font-mono">
+                        <span id="current-time">0:00</span>
+                        <span id="total-time">0:00</span>
+                    </div>
+                    <div id="progress-container" class="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
+                        <div id="progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
+                    </div>
+                </div>
+
+                <!-- Controles de Mídia -->
+                <div class="flex items-center space-x-6">
+                    <button onclick="controlPlayback('previous')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                    </button>
+                    <button id="play-pause-btn" onclick="togglePlayPause()" class="w-14 h-14 bg-spotify hover:bg-spotify/90 text-black rounded-full flex items-center justify-center transition transform hover:scale-105 shadow-lg shadow-spotify/20">
+                        <svg id="play-icon" class="w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="pause-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <button onclick="controlPlayback('next')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Coluna Direita: Letras Lado a Lado (Split Screen) -->
+            <div class="hidden lg:flex flex-col w-full max-w-md h-[460px] bg-gray-900/50 backdrop-blur-xl border border-gray-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                <div class="flex justify-between items-center pb-3 border-b border-gray-800">
+                    <span class="text-xs font-bold text-spotify tracking-wider uppercase">Letra Sincronizada</span>
+                    <!-- Seletores de Estilo -->
                     <div class="flex space-x-1 bg-black/40 p-1 rounded-xl border border-gray-800 text-xs">
                         <button onclick="setLyricsMode('karaoke')" class="px-2.5 py-1 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
                         <button onclick="setLyricsMode('poetry')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
@@ -174,20 +181,48 @@
                     </div>
                 </div>
 
-                <!-- Palco das Letras (Sem Caixa Fechada, Visual Amplo) -->
-                <div id="immersive-lyrics-area" class="h-64 overflow-y-auto immersive-lyrics-box px-2 py-4 text-center transition-all duration-300">
-                    <div id="lyrics-content" class="text-gray-500 font-medium py-16">Aguardando música para carregar as letras...</div>
+                <!-- Container Rolável das Letras -->
+                <div id="split-lyrics-box" class="flex-1 overflow-y-auto py-32 text-center relative scroll-smooth">
+                    <div id="split-lyrics-content" class="text-gray-500 font-medium">Aguardando música...</div>
                 </div>
-
             </div>
 
         </div>
 
     </main>
 
+    <!-- MODAL DE LETRAS EM TELA CHEIA -->
+    <div id="fullscreen-lyrics-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col hidden transition-opacity duration-300">
+        <!-- Barra Superior do Modal -->
+        <div class="w-full flex justify-between items-center p-6 border-b border-gray-800/80">
+            <div class="flex items-center space-x-3">
+                <span id="fs-track-title" class="font-bold text-lg text-white truncate max-w-xs">Música</span>
+                <span class="text-gray-500">•</span>
+                <span id="fs-artist-title" class="text-sm text-gray-400 truncate max-w-xs">Artista</span>
+            </div>
+
+            <!-- Seletores de Tipo no Modal & Botão Fechar -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex space-x-1 bg-gray-900 p-1 rounded-xl border border-gray-800 text-xs">
+                    <button onclick="setLyricsMode('karaoke')" class="px-3 py-1.5 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
+                    <button onclick="setLyricsMode('poetry')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
+                    <button onclick="setLyricsMode('minimal')" class="px-3 py-1.5 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
+                </div>
+                <button onclick="toggleFullscreenLyricsModal(false)" class="p-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-full transition shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Área Central da Letra em Tela Cheia (Sempre Perfeitamente no Centro) -->
+        <div id="fs-lyrics-box" class="flex-1 overflow-y-auto py-64 px-4 text-center relative scroll-smooth flex flex-col items-center">
+            <div id="fs-lyrics-content" class="w-full max-w-2xl text-gray-500 font-medium">Carregando letra...</div>
+        </div>
+    </div>
+
     <!-- Rodapé -->
-    <footer class="w-full max-w-lg text-center py-4 text-xs text-gray-500">
-        Spotify Vinyl Player & LRCLIB Dynamic Integration
+    <footer class="w-full max-w-5xl text-center py-4 text-xs text-gray-500">
+        Spotify Vinyl & LRCLIB Dynamic Integration
     </footer>
 
     <!-- Lógica JavaScript -->
@@ -205,7 +240,7 @@
         let trackProgress = 0;
         let currentTrackId = null;
         let lyricsData = null;
-        let currentLyricsMode = 'karaoke'; // Opções: 'karaoke', 'poetry', 'minimal'
+        let currentLyricsMode = 'karaoke'; // 'karaoke', 'poetry', 'minimal'
 
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
@@ -308,11 +343,14 @@
         function showLogin() {
             document.getElementById('login-screen').classList.remove('hidden');
             document.getElementById('player-screen').classList.add('hidden');
+            document.getElementById('fullscreen-lyrics-trigger').classList.add('hidden');
         }
 
         function showPlayer() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('player-screen').classList.remove('hidden');
+            document.getElementById('fullscreen-lyrics-trigger').classList.remove('hidden');
+            
             document.getElementById('auth-container').innerHTML = `
                 <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-800/80 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition">Sair</button>
             `;
@@ -352,11 +390,15 @@
 
         function setIdleState() {
             document.getElementById('track-name').innerText = 'Nenhuma música tocando';
-            document.getElementById('artist-name').innerText = 'Abra o Spotify e dê play em alguma faixa';
+            document.getElementById('artist-name').innerText = 'Abra o Spotify e dê play';
             document.getElementById('vinyl-record').classList.add('paused');
             document.getElementById('sleeve-img').src = '';
             document.getElementById('vinyl-center-img').src = '';
-            document.getElementById('lyrics-content').innerHTML = '<span class="text-gray-500 font-medium py-16 inline-block">Nenhuma música reproduzindo no momento.</span>';
+            
+            const idleHTML = '<span class="text-gray-500 font-medium">Nenhuma música reproduzindo no momento.</span>';
+            document.getElementById('split-lyrics-content').innerHTML = idleHTML;
+            document.getElementById('fs-lyrics-content').innerHTML = idleHTML;
+
             isPlayingState = false;
             currentTrackId = null;
             updatePlayPauseIcon(false);
@@ -378,8 +420,13 @@
                 await fetchLyrics(track.name, track.artists[0].name, track.album.name, Math.floor(track.duration_ms / 1000));
             }
 
-            document.getElementById('track-name').innerText = track.name;
-            document.getElementById('artist-name').innerText = track.artists.map(a => a.name).join(', ');
+            const trackNameStr = track.name;
+            const artistNameStr = track.artists.map(a => a.name).join(', ');
+
+            document.getElementById('track-name').innerText = trackNameStr;
+            document.getElementById('artist-name').innerText = artistNameStr;
+            document.getElementById('fs-track-title').innerText = trackNameStr;
+            document.getElementById('fs-artist-title').innerText = artistNameStr;
 
             const albumImg = track.album.images[0]?.url || '';
             if (document.getElementById('sleeve-img').src !== albumImg) {
@@ -388,11 +435,8 @@
             }
 
             const vinyl = document.getElementById('vinyl-record');
-            if (isPlaying) {
-                vinyl.classList.remove('paused');
-            } else {
-                vinyl.classList.add('paused');
-            }
+            if (isPlaying) vinyl.classList.remove('paused');
+            else vinyl.classList.add('paused');
 
             updatePlayPauseIcon(isPlaying);
 
@@ -410,8 +454,9 @@
         }
 
         async function fetchLyrics(trackName, artistName, albumName, duration) {
-            const container = document.getElementById('lyrics-content');
-            container.innerHTML = '<span class="text-gray-400 animate-pulse font-medium py-16 inline-block">Buscando letra imersiva...</span>';
+            const loadingHTML = '<span class="text-gray-400 animate-pulse font-medium">Buscando letra sincronizada...</span>';
+            document.getElementById('split-lyrics-content').innerHTML = loadingHTML;
+            document.getElementById('fs-lyrics-content').innerHTML = loadingHTML;
             lyricsData = null;
 
             try {
@@ -419,7 +464,9 @@
                 const response = await fetch(url);
                 
                 if (!response.ok) {
-                    container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Letra não encontrada para esta faixa.</span>';
+                    const errHTML = '<span class="text-gray-500">Letra não encontrada para esta faixa.</span>';
+                    document.getElementById('split-lyrics-content').innerHTML = errHTML;
+                    document.getElementById('fs-lyrics-content').innerHTML = errHTML;
                     return;
                 }
 
@@ -432,10 +479,14 @@
                     lyricsData = data.plainLyrics.split('\n').map((text, idx) => ({ time: idx * 3000, text }));
                     renderLyricsHTML();
                 } else {
-                    container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Letra instrumental ou indisponível.</span>';
+                    const instHTML = '<span class="text-gray-500">Letra instrumental ou indisponível.</span>';
+                    document.getElementById('split-lyrics-content').innerHTML = instHTML;
+                    document.getElementById('fs-lyrics-content').innerHTML = instHTML;
                 }
             } catch (err) {
-                container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Erro ao carregar a letra.</span>';
+                const errHTML = '<span class="text-gray-500">Erro ao carregar a letra.</span>';
+                document.getElementById('split-lyrics-content').innerHTML = errHTML;
+                document.getElementById('fs-lyrics-content').innerHTML = errHTML;
             }
         }
 
@@ -459,15 +510,16 @@
         }
 
         function renderLyricsHTML() {
-            const container = document.getElementById('lyrics-content');
             if (!lyricsData || lyricsData.length === 0) return;
 
-            let html = '<div class="space-y-6 py-8">';
+            let html = '<div class="space-y-6 py-4">';
             lyricsData.forEach((item, index) => {
-                html += `<p id="lyric-line-${index}" class="transition-all duration-300 text-gray-500 text-base font-medium leading-relaxed">${item.text || '&bull;&bull;&bull;'}</p>`;
+                html += `<p id="lyric-line-${index}" class="lyric-item transition-all duration-300 text-gray-500 text-base font-medium leading-relaxed">${item.text || '&bull;&bull;&bull;'}</p>`;
             });
             html += '</div>';
-            container.innerHTML = html;
+
+            document.getElementById('split-lyrics-content').innerHTML = html;
+            document.getElementById('fs-lyrics-content').innerHTML = html;
         }
 
         function highlightCurrentLyric(currentTimeMs) {
@@ -483,32 +535,51 @@
             }
 
             for (let i = 0; i < lyricsData.length; i++) {
-                const lineEl = document.getElementById(`lyric-line-${i}`);
-                if (!lineEl) continue;
+                const splitLine = document.getElementById(`split-lyrics-content`)?.querySelector(`#lyric-line-${i}`);
+                const fsLine = document.getElementById(`fs-lyrics-content`)?.querySelector(`#lyric-line-${i}`);
 
-                if (currentLyricsMode === 'minimal') {
-                    if (i === activeIndex) {
-                        lineEl.className = 'transition-all duration-300 text-spotify font-bold text-xl scale-105 my-8';
+                const elements = [splitLine, fsLine].filter(Boolean);
+                elements.forEach(lineEl => {
+                    if (currentLyricsMode === 'minimal') {
+                        if (i === activeIndex) {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-bold text-2xl scale-105 my-8';
+                            lineEl.style.display = 'block';
+                        } else {
+                            lineEl.style.display = 'none';
+                        }
+                    } else if (currentLyricsMode === 'poetry') {
                         lineEl.style.display = 'block';
+                        if (i === activeIndex) {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-semibold text-base my-2 scale-102';
+                        } else {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-400 text-sm my-2';
+                        }
                     } else {
-                        lineEl.className = 'hidden';
+                        // Karaokê (Sempre centralizado)
+                        lineEl.style.display = 'block';
+                        if (i === activeIndex) {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-spotify font-extrabold text-lg my-4 scale-105 drop-shadow-[0_0_12px_rgba(29,185,84,0.4)]';
+                        } else if (Math.abs(i - activeIndex) === 1) {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-300 text-base font-medium my-2 opacity-80';
+                        } else {
+                            lineEl.className = 'lyric-item transition-all duration-300 text-gray-600 text-sm font-medium my-2 opacity-30';
+                        }
                     }
-                } else if (currentLyricsMode === 'poetry') {
-                    if (i === activeIndex) {
-                        lineEl.className = 'transition-all duration-300 text-spotify font-semibold text-base scale-102 my-2';
-                    } else {
-                        lineEl.className = 'transition-all duration-300 text-gray-400 text-sm my-2';
-                    }
-                } else {
-                    // Modo Karaokê Padrão
-                    if (i === activeIndex) {
-                        lineEl.className = 'transition-all duration-300 text-spotify font-extrabold text-lg scale-105 my-4 drop-shadow-[0_0_12px_rgba(29,185,84,0.4)]';
-                        lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else if (Math.abs(i - activeIndex) === 1) {
-                        lineEl.className = 'transition-all duration-300 text-gray-300 text-base font-medium my-2 opacity-80';
-                    } else {
-                        lineEl.className = 'transition-all duration-300 text-gray-600 text-sm font-medium my-2 opacity-40';
-                    }
+                });
+            }
+
+            // Centralização automática exata para manter a linha ativa no meio do container
+            if (activeIndex !== -1) {
+                const activeSplit = document.getElementById(`split-lyrics-content`)?.querySelector(`#lyric-line-${activeIndex}`);
+                const activeFs = document.getElementById(`fs-lyrics-content`)?.querySelector(`#lyric-line-${activeIndex}`);
+
+                if (activeSplit) {
+                    const box = document.getElementById('split-lyrics-box');
+                    box.scrollTo({ top: activeSplit.offsetTop - box.clientHeight / 2 + activeSplit.clientHeight / 2, behavior: 'smooth' });
+                }
+                if (activeFs) {
+                    const boxFs = document.getElementById('fs-lyrics-box');
+                    boxFs.scrollTo({ top: activeFs.offsetTop - boxFs.clientHeight / 2 + activeFs.clientHeight / 2, behavior: 'smooth' });
                 }
             }
         }
@@ -523,6 +594,16 @@
                 }
             });
             highlightCurrentLyric(trackProgress);
+        }
+
+        function toggleFullscreenLyricsModal(open) {
+            const modal = document.getElementById('fullscreen-lyrics-modal');
+            if (open) {
+                modal.classList.remove('hidden');
+                setTimeout(() => highlightCurrentLyric(trackProgress), 100);
+            } else {
+                modal.classList.add('hidden');
+            }
         }
 
         function updatePlayPauseIcon(isPlaying) {
