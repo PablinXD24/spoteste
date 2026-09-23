@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Vinyl Player com Letras Imersivas</title>
+    <title>Spotify Vinyl & Immersive Lyrics</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -32,35 +32,53 @@
         }
         /* Ranhuras do Vinil */
         .vinyl-grooves {
-            background: repeating-radial-gradient(circle at center, #111 0px, #111 2px, #222 3px, #111 4px);
+            background: repeating-radial-gradient(
+                circle at center,
+                #111 0px,
+                #111 2px,
+                #222 3px,
+                #111 4px
+            );
         }
         .vinyl-gold {
-            background: repeating-radial-gradient(circle at center, #2a2200 0px, #2a2200 2px, #daa520 3px, #1a1400 4px);
+            background: repeating-radial-gradient(
+                circle at center,
+                #2a2200 0px,
+                #2a2200 2px,
+                #daa520 3px,
+                #1a1400 4px
+            );
         }
         .vinyl-cyber {
-            background: repeating-radial-gradient(circle at center, #0b0f19 0px, #0b0f19 2px, #00f0ff 3px, #110022 4px);
+            background: repeating-radial-gradient(
+                circle at center,
+                #0b0f19 0px,
+                #0b0f19 2px,
+                #00f0ff 3px,
+                #110022 4px
+            );
         }
-        
-        /* Efeito de Gradiente Suave nas Bordas do Painel de Letras */
-        .lyrics-fade-mask {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        /* Estilização personalizada para scrollbar imersiva */
+        .immersive-lyrics-box::-webkit-scrollbar {
+            width: 6px;
         }
-        
-        /* Ocultar barra de rolagem mantendo a funcionalidade */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .immersive-lyrics-box::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .immersive-lyrics-box::-webkit-scrollbar-thumb {
+            background: rgba(29, 185, 84, 0.4);
+            border-radius: 8px;
+        }
+        .immersive-lyrics-box::-webkit-scrollbar-thumb:hover {
+            background: rgba(29, 185, 84, 0.8);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-spotify selection:text-black">
 
     <!-- Cabeçalho -->
-    <header class="w-full max-w-md flex justify-between items-center py-4 px-2 z-20">
+    <header class="w-full max-w-lg flex justify-between items-center py-4 px-2">
         <div class="flex items-center space-x-2">
             <svg class="w-8 h-8 text-spotify" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.421.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.24 1.08zm1.44-3.9c-.301.42-.841.6-1.261.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.2-1.26 9.6-0.6 13.38 1.68.48.3.6.9.36 1.38zm.12-4.08C13.92 7.08 8.1 6.9 4.8 7.92c-.6.18-1.2-.18-1.38-.78-.18-.6.18-1.2.78-1.38 3.84-1.2 10.38-0.96 14.7 1.62.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
@@ -71,42 +89,35 @@
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="w-full max-w-md flex flex-col items-center justify-center my-auto space-y-4 z-20">
+    <main class="w-full max-w-lg flex flex-col items-center justify-center my-auto space-y-6">
         
         <!-- Estado Desconectado -->
-        <div id="login-screen" class="text-center py-12 px-6 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl w-full">
+        <div id="login-screen" class="text-center py-14 px-8 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl w-full">
             <div class="w-20 h-20 bg-spotify/10 rounded-full flex items-center justify-center mx-auto mb-6 text-spotify">
                 <svg class="w-10 h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             </div>
             <h2 class="text-2xl font-bold mb-2">Conecte sua conta</h2>
-            <p class="text-gray-400 text-sm mb-6">Ouça suas músicas, veja o vinil rodar e curta letras imersivas.</p>
+            <p class="text-gray-400 text-sm mb-6">Experimente o disco de vinil interativo e a experiência visual de letras em tempo real.</p>
             <button id="login-btn" class="w-full bg-spotify hover:bg-spotify/90 text-black font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-spotify/20 flex items-center justify-center space-x-2">
                 <span>Conectar com o Spotify</span>
             </button>
         </div>
 
         <!-- Estado Conectado / Player -->
-        <div id="player-screen" class="w-full flex flex-col items-center space-y-4 hidden">
+        <div id="player-screen" class="w-full flex flex-col items-center space-y-6 hidden">
             
-            <!-- Aviso de Dispositivo Inativo -->
-            <div id="device-warning" class="hidden w-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs py-2 px-3 rounded-xl text-center">
-                Nenhum dispositivo ativo encontrado. Abra o app do Spotify em algum aparelho!
-            </div>
-
-            <!-- Seletor de Estilo do Vinil -->
-            <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs">
-                <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Clássico</button>
-                <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Dourado</button>
+            <!-- Seletores de Tema do Vinil -->
+            <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs shadow-inner">
+                <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Vinil Clássico</button>
+                <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Vinil Dourado</button>
                 <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="cyber">Cyberpunk</button>
             </div>
 
             <!-- Palco do Vinil -->
-            <div class="relative w-72 h-72 flex items-center justify-center my-1">
-                <!-- Capa do Álbum -->
+            <div class="relative w-72 h-72 flex items-center justify-center my-2">
                 <div id="album-sleeve" class="absolute left-0 w-60 h-60 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-6 rotate-[-4deg]">
                     <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
                 </div>
-                <!-- O Disco de Vinil -->
                 <div id="vinyl-record" class="absolute right-0 w-64 h-64 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
                     <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
                         <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
@@ -146,70 +157,37 @@
                 </button>
             </div>
 
-            <!-- BOTÃO PARA ABRIR O MODO DE LETRAS IMERSIVO -->
-            <div class="w-full pt-1">
-                <button onclick="openLyricsFullscreen()" class="w-full py-3 bg-gradient-to-r from-spotify/20 via-spotify/10 to-transparent hover:from-spotify/30 rounded-2xl text-xs font-bold text-spotify border border-spotify/30 transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-spotify/5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-                    <span>Abrir Letras Imersivas 🎵</span>
-                </button>
+            <!-- PAINEL DE LETRAS IMERSIVO E ESTILIZADO -->
+            <div class="w-full bg-gradient-to-b from-gray-900/90 to-gray-950/95 backdrop-blur-xl border border-gray-800/80 rounded-2xl p-5 shadow-2xl space-y-4">
+                
+                <!-- Cabeçalho e Seletores de Estilo de Letras -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 border-b border-gray-800 pb-3">
+                    <div class="flex items-center space-x-2 text-spotify font-bold text-sm tracking-wide">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                        <span>Experiência de Letras</span>
+                    </div>
+                    <!-- Modos de Exibição -->
+                    <div class="flex space-x-1 bg-black/40 p-1 rounded-xl border border-gray-800 text-xs">
+                        <button onclick="setLyricsMode('karaoke')" class="px-2.5 py-1 rounded-lg bg-gray-800 transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
+                        <button onclick="setLyricsMode('poetry')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="poetry">Poema</button>
+                        <button onclick="setLyricsMode('minimal')" class="px-2.5 py-1 rounded-lg hover:bg-gray-800 transition lyric-mode-btn" data-mode="minimal">Minimal</button>
+                    </div>
+                </div>
+
+                <!-- Palco das Letras (Sem Caixa Fechada, Visual Amplo) -->
+                <div id="immersive-lyrics-area" class="h-64 overflow-y-auto immersive-lyrics-box px-2 py-4 text-center transition-all duration-300">
+                    <div id="lyrics-content" class="text-gray-500 font-medium py-16">Aguardando música para carregar as letras...</div>
+                </div>
+
             </div>
 
         </div>
 
     </main>
 
-    <!-- TELA CHEIA / MODAL DE LETRAS IMERSIVAS -->
-    <div id="lyrics-modal" class="fixed inset-0 bg-black/95 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 opacity-0 pointer-events-none transition-all duration-500 scale-95">
-        
-        <!-- Cabeçalho do Modal de Letras -->
-        <div class="w-full max-w-xl mx-auto flex justify-between items-center border-b border-white/10 pb-4">
-            <div class="flex items-center space-x-3 truncate">
-                <img id="modal-album-thumb" src="" alt="Capa" class="w-10 h-10 rounded-lg shadow-md object-cover">
-                <div class="truncate">
-                    <h4 id="modal-track-name" class="font-bold text-sm truncate text-white">Música</h4>
-                    <p id="modal-artist-name" class="text-xs text-gray-400 truncate">Artista</p>
-                </div>
-            </div>
-            
-            <!-- Controles de Personalização das Letras -->
-            <div class="flex items-center space-x-3">
-                <!-- Seletor de Estilo de Visualização -->
-                <div class="bg-white/10 p-1 rounded-xl flex items-center space-x-1 text-xs">
-                    <button onclick="setLyricsMode('karaoke')" id="mode-karaoke-btn" class="px-2.5 py-1 rounded-lg bg-spotify text-black font-bold transition">Karaokê</button>
-                    <button onclick="setLyricsMode('cards')" id="mode-cards-btn" class="px-2.5 py-1 rounded-lg text-gray-300 hover:text-white transition">Cards</button>
-                    <button onclick="setLyricsMode('minimal')" id="mode-minimal-btn" class="px-2.5 py-1 rounded-lg text-gray-300 hover:text-white transition">Clean</button>
-                </div>
-                
-                <!-- Botão Fechar -->
-                <button onclick="closeLyricsFullscreen()" class="w-9 h-9 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-gray-300 hover:text-white transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Área Principal de Exibição das Letras (Diferentes Estilos) -->
-        <div id="lyrics-display-area" class="w-full max-w-2xl mx-auto flex-1 flex flex-col items-center justify-center overflow-y-auto no-scrollbar py-12 lyrics-fade-mask relative">
-            <div id="fullscreen-lyrics-content" class="text-center space-y-8 w-full transition-all duration-300">
-                <span class="text-gray-500 animate-pulse text-lg">Carregando letras imersivas...</span>
-            </div>
-        </div>
-
-        <!-- Rodapé do Modal com Progresso Rápido -->
-        <div class="w-full max-w-xl mx-auto flex flex-col space-y-2 border-t border-white/10 pt-4">
-            <div class="flex justify-between items-center text-xs text-gray-400 font-mono">
-                <span id="modal-current-time">0:00</span>
-                <span class="text-spotify font-semibold flex items-center gap-1">✨ Sincronizado em tempo real</span>
-                <span id="modal-total-time">0:00</span>
-            </div>
-            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer" onclick="seekTrack(event)">
-                <div id="modal-progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Rodapé -->
-    <footer class="w-full max-w-md text-center py-3 text-xs text-gray-500 z-20">
-        Spotify API & LRCLIB Immersive Lyrics
+    <footer class="w-full max-w-lg text-center py-4 text-xs text-gray-500">
+        Spotify Vinyl Player & LRCLIB Dynamic Integration
     </footer>
 
     <!-- Lógica JavaScript -->
@@ -227,10 +205,7 @@
         let trackProgress = 0;
         let currentTrackId = null;
         let lyricsData = null;
-        let currentLyricsMode = 'karaoke'; // 'karaoke', 'cards', 'minimal'
-        let currentAlbumImage = '';
-        let currentTrackTitle = '';
-        let currentArtistName = '';
+        let currentLyricsMode = 'karaoke'; // Opções: 'karaoke', 'poetry', 'minimal'
 
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
@@ -369,7 +344,6 @@
                 }
 
                 const data = await response.json();
-                document.getElementById('device-warning').classList.add('hidden');
                 updatePlayerUI(data);
             } catch (err) {
                 console.error('Erro ao buscar player:', err);
@@ -382,7 +356,7 @@
             document.getElementById('vinyl-record').classList.add('paused');
             document.getElementById('sleeve-img').src = '';
             document.getElementById('vinyl-center-img').src = '';
-            document.getElementById('fullscreen-lyrics-content').innerHTML = '<span class="text-gray-500">Nenhuma música reproduzindo no momento.</span>';
+            document.getElementById('lyrics-content').innerHTML = '<span class="text-gray-500 font-medium py-16 inline-block">Nenhuma música reproduzindo no momento.</span>';
             isPlayingState = false;
             currentTrackId = null;
             updatePlayPauseIcon(false);
@@ -399,24 +373,18 @@
             const isPlaying = data.is_playing;
             isPlayingState = isPlaying;
 
-            currentTrackTitle = track.name;
-            currentArtistName = track.artists.map(a => a.name).join(', ');
-            currentAlbumImage = track.album.images[0]?.url || '';
-
             if (currentTrackId !== track.id) {
                 currentTrackId = track.id;
-                await fetchLyrics(currentTrackTitle, track.artists[0].name, track.album.name, Math.floor(track.duration_ms / 1000));
+                await fetchLyrics(track.name, track.artists[0].name, track.album.name, Math.floor(track.duration_ms / 1000));
             }
 
-            document.getElementById('track-name').innerText = currentTrackTitle;
-            document.getElementById('artist-name').innerText = currentArtistName;
-            document.getElementById('modal-track-name').innerText = currentTrackTitle;
-            document.getElementById('modal-artist-name').innerText = currentArtistName;
+            document.getElementById('track-name').innerText = track.name;
+            document.getElementById('artist-name').innerText = track.artists.map(a => a.name).join(', ');
 
-            if (document.getElementById('sleeve-img').src !== currentAlbumImage) {
-                document.getElementById('sleeve-img').src = currentAlbumImage;
-                document.getElementById('vinyl-center-img').src = currentAlbumImage;
-                document.getElementById('modal-album-thumb').src = currentAlbumImage;
+            const albumImg = track.album.images[0]?.url || '';
+            if (document.getElementById('sleeve-img').src !== albumImg) {
+                document.getElementById('sleeve-img').src = albumImg;
+                document.getElementById('vinyl-center-img').src = albumImg;
             }
 
             const vinyl = document.getElementById('vinyl-record');
@@ -442,8 +410,8 @@
         }
 
         async function fetchLyrics(trackName, artistName, albumName, duration) {
-            const container = document.getElementById('fullscreen-lyrics-content');
-            container.innerHTML = '<span class="text-gray-400 animate-pulse text-lg">Buscando letra imersiva...</span>';
+            const container = document.getElementById('lyrics-content');
+            container.innerHTML = '<span class="text-gray-400 animate-pulse font-medium py-16 inline-block">Buscando letra imersiva...</span>';
             lyricsData = null;
 
             try {
@@ -451,7 +419,7 @@
                 const response = await fetch(url);
                 
                 if (!response.ok) {
-                    container.innerHTML = '<span class="text-gray-500 text-lg">Letra não encontrada para esta faixa.</span>';
+                    container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Letra não encontrada para esta faixa.</span>';
                     return;
                 }
 
@@ -459,14 +427,15 @@
                 
                 if (data.syncedLyrics) {
                     lyricsData = parseLrc(data.syncedLyrics);
-                    renderLyricsByMode();
+                    renderLyricsHTML();
                 } else if (data.plainLyrics) {
-                    container.innerHTML = `<p class="whitespace-pre-line text-gray-300 text-lg leading-loose px-4">${data.plainLyrics}</p>`;
+                    lyricsData = data.plainLyrics.split('\n').map((text, idx) => ({ time: idx * 3000, text }));
+                    renderLyricsHTML();
                 } else {
-                    container.innerHTML = '<span class="text-gray-500 text-lg">Letra instrumental ou indisponível.</span>';
+                    container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Letra instrumental ou indisponível.</span>';
                 }
             } catch (err) {
-                container.innerHTML = '<span class="text-gray-500 text-lg">Erro ao carregar a letra.</span>';
+                container.innerHTML = '<span class="text-gray-500 py-16 inline-block">Erro ao carregar a letra.</span>';
             }
         }
 
@@ -483,52 +452,22 @@
                     const ms = parseInt(match[3].padEnd(3, '0'), 10);
                     const totalMs = (mins * 60 + secs) * 1000 + ms;
                     const text = line.replace(timeReg, '').trim();
-                    parsed.push({ time: totalMs, text: text || '♪' });
+                    parsed.push({ time: totalMs, text: text });
                 }
             }
             return parsed;
         }
 
-        function renderLyricsByMode() {
+        function renderLyricsHTML() {
+            const container = document.getElementById('lyrics-content');
             if (!lyricsData || lyricsData.length === 0) return;
-            const container = document.getElementById('fullscreen-lyrics-content');
-            let html = '';
 
-            if (currentLyricsMode === 'karaoke') {
-                html = '<div class="space-y-12 py-24">';
-                lyricsData.forEach((item, index) => {
-                    html += `<p id="lyric-line-${index}" class="transition-all duration-500 text-gray-500 text-xl md:text-2xl font-semibold tracking-wide scale-95">${item.text}</p>`;
-                });
-                html += '</div>';
-            } else if (currentLyricsMode === 'cards') {
-                html = '<div class="space-y-16 py-32">';
-                lyricsData.forEach((item, index) => {
-                    html += `<div id="lyric-line-${index}" class="transition-all duration-500 p-6 rounded-3xl bg-white/5 border border-white/5 text-gray-400 text-xl font-medium shadow-xl">${item.text}</div>`;
-                });
-                html += '</div>';
-            } else if (currentLyricsMode === 'minimal') {
-                html = '<div class="space-y-20 py-40">';
-                lyricsData.forEach((item, index) => {
-                    html += `<p id="lyric-line-${index}" class="transition-all duration-500 text-gray-600 text-3xl md:text-4xl font-extrabold tracking-tight">${item.text}</p>`;
-                });
-                html += '</div>';
-            }
-
-            container.innerHTML = html;
-        }
-
-        function setLyricsMode(mode) {
-            currentLyricsMode = mode;
-            ['karaoke', 'cards', 'minimal'].forEach(m => {
-                const btn = document.getElementById(`mode-${m}-btn`);
-                if (m === mode) {
-                    btn.className = 'px-2.5 py-1 rounded-lg bg-spotify text-black font-bold transition';
-                } else {
-                    btn.className = 'px-2.5 py-1 rounded-lg text-gray-300 hover:text-white transition';
-                }
+            let html = '<div class="space-y-6 py-8">';
+            lyricsData.forEach((item, index) => {
+                html += `<p id="lyric-line-${index}" class="transition-all duration-300 text-gray-500 text-base font-medium leading-relaxed">${item.text || '&bull;&bull;&bull;'}</p>`;
             });
-            renderLyricsByMode();
-            highlightCurrentLyric(trackProgress);
+            html += '</div>';
+            container.innerHTML = html;
         }
 
         function highlightCurrentLyric(currentTimeMs) {
@@ -547,23 +486,43 @@
                 const lineEl = document.getElementById(`lyric-line-${i}`);
                 if (!lineEl) continue;
 
-                if (i === activeIndex) {
-                    if (currentLyricsMode === 'cards') {
-                        lineEl.className = 'transition-all duration-500 p-6 rounded-3xl bg-spotify/20 border border-spotify/50 text-spotify text-2xl font-bold shadow-2xl scale-105';
-                    } else if (currentLyricsMode === 'minimal') {
-                        lineEl.className = 'transition-all duration-500 text-white text-4xl md:text-5xl font-black tracking-tight scale-105';
+                if (currentLyricsMode === 'minimal') {
+                    if (i === activeIndex) {
+                        lineEl.className = 'transition-all duration-300 text-spotify font-bold text-xl scale-105 my-8';
+                        lineEl.style.display = 'block';
                     } else {
-                        lineEl.className = 'transition-all duration-500 text-spotify font-bold text-2xl md:text-3xl scale-105';
+                        lineEl.className = 'hidden';
                     }
-                    lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    if (currentLyricsMode === 'cards') {
-                        lineEl.className = 'transition-all duration-500 p-6 rounded-3xl bg-white/5 border border-white/5 text-gray-500 text-xl font-medium shadow-xl opacity-40';
+                } else if (currentLyricsMode === 'poetry') {
+                    if (i === activeIndex) {
+                        lineEl.className = 'transition-all duration-300 text-spotify font-semibold text-base scale-102 my-2';
                     } else {
-                        lineEl.className = 'transition-all duration-500 text-gray-600 text-xl md:text-2xl font-semibold opacity-50';
+                        lineEl.className = 'transition-all duration-300 text-gray-400 text-sm my-2';
+                    }
+                } else {
+                    // Modo Karaokê Padrão
+                    if (i === activeIndex) {
+                        lineEl.className = 'transition-all duration-300 text-spotify font-extrabold text-lg scale-105 my-4 drop-shadow-[0_0_12px_rgba(29,185,84,0.4)]';
+                        lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else if (Math.abs(i - activeIndex) === 1) {
+                        lineEl.className = 'transition-all duration-300 text-gray-300 text-base font-medium my-2 opacity-80';
+                    } else {
+                        lineEl.className = 'transition-all duration-300 text-gray-600 text-sm font-medium my-2 opacity-40';
                     }
                 }
             }
+        }
+
+        function setLyricsMode(mode) {
+            currentLyricsMode = mode;
+            document.querySelectorAll('.lyric-mode-btn').forEach(btn => {
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('bg-gray-800');
+                } else {
+                    btn.classList.remove('bg-gray-800');
+                }
+            });
+            highlightCurrentLyric(trackProgress);
         }
 
         function updatePlayPauseIcon(isPlaying) {
@@ -596,12 +555,9 @@
 
             document.getElementById('current-time').innerText = formatTime(currentSecs);
             document.getElementById('total-time').innerText = formatTime(totalSecs);
-            document.getElementById('modal-current-time').innerText = formatTime(currentSecs);
-            document.getElementById('modal-total-time').innerText = formatTime(totalSecs);
 
             const percentage = trackDuration > 0 ? (trackProgress / trackDuration) * 100 : 0;
             document.getElementById('progress-bar').style.width = `${percentage}%`;
-            document.getElementById('modal-progress-bar').style.width = `${percentage}%`;
         }
 
         function formatTime(seconds) {
@@ -656,11 +612,9 @@
         }
 
         async function seekTrack(event) {
-            const container = event.currentTarget.querySelector('.h-full') || event.currentTarget;
-            const rect = event.currentTarget.getBoundingClientRect();
-            const clickX = event.clientX - rect.left;
-            const percentage = clickX / rect.width;
-            const seekPos = Math.floor(trackDuration * percentage);
+            const container = document.getElementById('progress-container');
+            const rect = container.getBoundingClientRect();
+            const seekPos = Math.floor(trackDuration * ((event.clientX - rect.left) / rect.width));
 
             const deviceId = await getActiveDeviceId();
             let url = `https://api.spotify.com/v1/me/player/seek?position_ms=${seekPos}`;
@@ -682,7 +636,6 @@
         function setTheme(theme) {
             const vinyl = document.getElementById('vinyl-record');
             vinyl.classList.remove('vinyl-grooves', 'vinyl-gold', 'vinyl-cyber');
-
             if (theme === 'classic') vinyl.classList.add('vinyl-grooves');
             if (theme === 'gold') vinyl.classList.add('vinyl-gold');
             if (theme === 'cyber') vinyl.classList.add('vinyl-cyber');
@@ -691,20 +644,6 @@
                 if (btn.dataset.theme === theme) btn.classList.add('bg-gray-800');
                 else btn.classList.remove('bg-gray-800');
             });
-        }
-
-        // Funções de Abertura / Fechamento do Immersive Modal
-        function openLyricsFullscreen() {
-            const modal = document.getElementById('lyrics-modal');
-            modal.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
-            modal.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
-            highlightCurrentLyric(trackProgress);
-        }
-
-        function closeLyricsFullscreen() {
-            const modal = document.getElementById('lyrics-modal');
-            modal.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
-            modal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
         }
     </script>
 </body>
