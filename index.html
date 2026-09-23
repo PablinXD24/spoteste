@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Vinyl Experience</title>
+    <title>Spotify Vinyl Player</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,435 +13,437 @@
                 extend: {
                     colors: {
                         spotify: '#1DB954',
-                        spotifyDark: '#1aa34a',
-                    },
-                    animation: {
-                        'spin-slow': 'spin 20s linear infinite',
-                        'pulse-glow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        spotifyDark: '#121212',
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .animate-spin-paused {
+        .animate-spin-slow {
+            animation: spin 20s linear infinite;
+        }
+        .paused {
             animation-play-state: paused;
         }
+        /* Ranhuras do Vinil */
         .vinyl-grooves {
             background: repeating-radial-gradient(
                 circle at center,
                 #111 0px,
                 #111 2px,
                 #222 3px,
-                #111 4px,
-                #1a1a1a 6px
+                #111 4px
             );
         }
-        .glass-panel {
-            background: rgba(18, 18, 18, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .vinyl-gold {
+            background: repeating-radial-gradient(
+                circle at center,
+                #2a2200 0px,
+                #2a2200 2px,
+                #daa520 3px,
+                #1a1400 4px
+            );
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
+        .vinyl-cyber {
+            background: repeating-radial-gradient(
+                circle at center,
+                #0b0f19 0px,
+                #0b0f19 2px,
+                #00f0ff 3px,
+                #110022 4px
+            );
         }
     </style>
 </head>
-<body class="bg-[#0b0b0e] text-zinc-100 min-h-screen flex flex-col justify-between selection:bg-spotify selection:text-white font-sans overflow-x-hidden">
+<body class="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-spotify selection:text-black">
 
-    <!-- Background Glow Effects -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div id="bg-glow-1" class="absolute -top-40 -left-40 w-96 h-96 bg-spotify/20 rounded-full blur-[120px] transition-all duration-1000"></div>
-        <div id="bg-glow-2" class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/15 rounded-full blur-[120px] transition-all duration-1000"></div>
-    </div>
-
-    <!-- Header -->
-    <header class="relative z-10 w-full max-w-5xl mx-auto p-6 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-spotify flex items-center justify-center text-black shadow-lg shadow-spotify/30">
-                <i class="fa-solid fa-compact-disc text-xl"></i>
-            </div>
-            <div>
-                <h1 class="font-bold text-lg tracking-tight">Spotify Vinyl</h1>
-                <p class="text-xs text-zinc-400">Interactive Web Player</p>
-            </div>
+    <!-- Cabeçalho -->
+    <header class="w-full max-w-md flex justify-between items-center py-4 px-2">
+        <div class="flex items-center space-x-2">
+            <svg class="w-8 h-8 text-spotify" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.421.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.24 1.08zm1.44-3.9c-.301.42-.841.6-1.261.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.02.6-1.14 4.2-1.26 9.6-0.6 13.38 1.68.48.3.6.9.36 1.38zm.12-4.08C13.92 7.08 8.1 6.9 4.8 7.92c-.6.18-1.2-.18-1.38-.78-.18-.6.18-1.2.78-1.38 3.84-1.2 10.38-0.96 14.7 1.62.54.36.72 1.08.36 1.62-.36.54-1.08.72-1.62.36z"/>
+            </svg>
+            <span class="font-bold text-lg tracking-wider">VinylPlayer</span>
         </div>
-
-        <!-- Controls Header / User Info -->
-        <div class="flex items-center space-x-4">
-            <!-- Theme Selector -->
-            <div class="hidden sm:flex items-center bg-zinc-900/80 border border-zinc-800 rounded-full p-1 text-xs">
-                <button onclick="setTheme('classic')" id="btn-theme-classic" class="px-3 py-1 rounded-full transition bg-spotify text-black font-medium">Clássico</button>
-                <button onclick="setTheme('gold')" id="btn-theme-gold" class="px-3 py-1 rounded-full transition text-zinc-400 hover:text-white">Dourado</button>
-                <button onclick="setTheme('cyber')" id="btn-theme-cyber" class="px-3 py-1 rounded-full transition text-zinc-400 hover:text-white">Cyber</button>
-            </div>
-
-            <button id="logout-btn" onclick="logout()" class="hidden text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-full transition border border-zinc-700">
-                <i class="fa-solid fa-right-from-bracket mr-1.5"></i> Sair
-            </button>
+        <div id="auth-container">
+            <!-- Inserido dinamicamente via JS -->
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex-grow flex flex-col items-center justify-center">
-
-        <!-- Login Screen -->
-        <div id="login-screen" class="glass-panel p-10 rounded-3xl text-center max-w-md w-full shadow-2xl shadow-black/55 my-auto">
-            <div class="w-20 h-20 bg-spotify/10 border border-spotify/30 rounded-full flex items-center justify-center mx-auto mb-6 text-spotify animate-pulse-glow">
-                <i class="fa-brands fa-spotify text-4xl"></i>
+    <!-- Conteúdo Principal -->
+    <main class="w-full max-w-md flex flex-col items-center justify-center my-auto space-y-6">
+        
+        <!-- Estado Desconectado -->
+        <div id="login-screen" class="text-center py-12 px-6 bg-gray-900/60 backdrop-blur-md rounded-2xl border border-gray-800 shadow-2xl w-full">
+            <div class="w-20 h-20 bg-spotify/10 rounded-full flex items-center justify-center mx-auto mb-6 text-spotify">
+                <svg class="w-10 h-10 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
             </div>
-            <h2 class="text-2xl font-bold mb-2">Conecte seu Spotify</h2>
-            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
-                Transforme sua música atual em um toca-discos de vinil interativo em tempo real direto no navegador.
-            </p>
-            <button onclick="loginWithSpotify()" class="w-full bg-spotify hover:bg-spotifyDark text-black font-semibold py-3.5 px-6 rounded-full transition duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-spotify/25">
-                <i class="fa-brands fa-spotify text-lg"></i>
-                <span>Conectar com Spotify</span>
+            <h2 class="text-2xl font-bold mb-2">Conecte sua conta</h2>
+            <p class="text-gray-400 text-sm mb-6">Ouça suas músicas no Spotify e veja o vinil girar em tempo real na tela.</p>
+            <button id="login-btn" class="w-full bg-spotify hover:bg-spotify/90 text-black font-bold py-3.5 px-6 rounded-xl transition duration-200 shadow-lg shadow-spotify/20 flex items-center justify-center space-x-2">
+                <span>Conectar com o Spotify</span>
             </button>
         </div>
 
-        <!-- Player Screen -->
-        <div id="player-screen" class="hidden w-full max-w-2xl flex flex-col items-center">
+        <!-- Estado Conectado / Player -->
+        <div id="player-screen" class="w-full flex flex-col items-center space-y-6 hidden">
+            
+            <!-- Seletor de Estilo do Vinil -->
+            <div class="flex space-x-2 bg-gray-900/80 p-1 rounded-xl border border-gray-800 text-xs">
+                <button onclick="setTheme('classic')" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 transition theme-btn" data-theme="classic">Clássico</button>
+                <button onclick="setTheme('gold')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="gold">Dourado</button>
+                <button onclick="setTheme('cyber')" class="px-3 py-1.5 rounded-lg hover:bg-gray-700 transition theme-btn" data-theme="cyber">Cyberpunk</button>
+            </div>
 
-            <!-- Vinyl Disc & Album Art Stage -->
-            <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center mb-8">
-                <!-- Vinyl Disc Body (Slides out to the right when playing) -->
-                <div id="vinyl-disc" class="absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full vinyl-grooves shadow-2xl shadow-black/80 flex items-center justify-center transition-all duration-700 translate-x-0 animate-spin animate-spin-paused border border-zinc-800">
-                    <!-- Vinyl Shine Effect -->
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
-                    
-                    <!-- Vinyl Center Label -->
-                    <div id="vinyl-label" class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-zinc-900 shadow-inner flex items-center justify-center bg-zinc-800">
-                        <img id="vinyl-label-img" src="" alt="Label" class="w-full h-full object-cover">
-                    </div>
-                    <!-- Center Hole -->
-                    <div class="absolute w-4 h-4 bg-[#0b0b0e] rounded-full border border-zinc-700"></div>
+            <!-- Palco do Vinil -->
+            <div class="relative w-72 h-72 flex items-center justify-center my-2">
+                <!-- Capa do Álbum saindo levemente para o lado (Efeito Capa de Disco) -->
+                <div id="album-sleeve" class="absolute left-0 w-60 h-60 bg-gray-800 rounded-lg shadow-2xl overflow-hidden transition-all duration-500 transform -translate-x-6 rotate-[-4deg]">
+                    <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover opacity-80">
                 </div>
 
-                <!-- Album Cover Sleeve (Stays centered or slightly left) -->
-                <div id="album-sleeve" class="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-2xl overflow-hidden shadow-2xl shadow-black/70 border border-white/10 z-10 transition-all duration-500 bg-zinc-900">
-                    <img id="album-art" src="" alt="Capa do Álbum" class="w-full h-full object-cover">
+                <!-- O Disco de Vinil -->
+                <div id="vinyl-record" class="absolute right-0 w-64 h-64 rounded-full vinyl-grooves shadow-2xl flex items-center justify-center border-4 border-gray-900 animate-spin-slow paused transition-all duration-300">
+                    <!-- Selo Central do Vinil -->
+                    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-800 relative shadow-inner flex items-center justify-center">
+                        <img id="vinyl-center-img" src="" alt="Selo" class="w-full h-full object-cover">
+                        <div class="absolute w-4 h-4 bg-gray-950 rounded-full border border-gray-700"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Track Info & Controls Panel -->
-            <div class="glass-panel w-full p-6 rounded-3xl shadow-xl backdrop-blur-xl">
-                
-                <!-- Track Meta -->
-                <div class="flex items-center justify-between mb-4">
-                    <div class="overflow-hidden pr-4">
-                        <h3 id="track-title" class="text-lg font-bold truncate text-white">Aguardando música...</h3>
-                        <p id="track-artist" class="text-sm text-zinc-400 truncate">Abra o Spotify e dê play em alguma faixa</p>
-                    </div>
-                    <button onclick="toggleDetails()" class="text-zinc-400 hover:text-white p-2 rounded-full hover:bg-white/5 transition" title="Mais detalhes">
-                        <i id="details-icon" class="fa-solid fa-chevron-down transition-transform"></i>
-                    </button>
-                </div>
+            <!-- Informações da Música -->
+            <div class="w-full text-center space-y-1 px-4">
+                <h3 id="track-name" class="text-xl font-bold truncate text-white">Nenhuma música tocando</h3>
+                <p id="artist-name" class="text-sm text-gray-400 truncate">Abra o Spotify e dê play em alguma faixa</p>
+            </div>
 
-                <!-- Progress Bar -->
-                <div class="space-y-1.5 mb-6">
-                    <div class="flex justify-between text-xs text-zinc-400 font-mono">
-                        <span id="current-time">0:00</span>
-                        <span id="total-time">0:00</span>
-                    </div>
-                    <div onclick="seekTrack(event)" id="progress-container" class="w-full h-1.5 bg-zinc-800 rounded-full cursor-pointer overflow-hidden relative group">
-                        <div id="progress-bar" class="absolute top-0 left-0 h-full bg-spotify w-0 transition-all duration-150 group-hover:bg-spotifyDark"></div>
-                    </div>
+            <!-- Barra de Progresso Interativa -->
+            <div class="w-full space-y-1 px-2">
+                <div class="flex justify-between text-xs text-gray-400 font-mono">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
                 </div>
-
-                <!-- Playback Controls -->
-                <div class="flex items-center justify-center space-x-6">
-                    <button onclick="controlPlayback('previous')" class="text-zinc-400 hover:text-white text-lg transition p-2 hover:scale-110 active:scale-95" title="Anterior">
-                        <i class="fa-solid fa-backward-step"></i>
-                    </button>
-                    <button id="play-pause-btn" onclick="togglePlayPause()" class="w-14 h-14 bg-spotify hover:bg-spotifyDark text-black rounded-full flex items-center justify-center text-xl transition transform hover:scale-105 active:scale-95 shadow-lg shadow-spotify/30">
-                        <i id="play-pause-icon" class="fa-solid fa-play ml-0.5"></i>
-                    </button>
-                    <button onclick="controlPlayback('next')" class="text-zinc-400 hover:text-white text-lg transition p-2 hover:scale-110 active:scale-95" title="Próxima">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </button>
+                <div id="progress-container" class="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden cursor-pointer relative" onclick="seekTrack(event)">
+                    <div id="progress-bar" class="h-full bg-spotify w-0 transition-all duration-100"></div>
                 </div>
+            </div>
 
-                <!-- Expandable Extra Details (Album & Device) -->
-                <div id="extra-details" class="hidden mt-6 pt-4 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-2 animate-fadeIn">
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-500">Álbum:</span>
-                        <span id="album-name" class="font-medium text-zinc-300 truncate max-w-[220px]">-</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-500">Dispositivo ativo:</span>
-                        <span id="device-name" class="font-medium text-spotify truncate max-w-[220px]">-</span>
-                    </div>
+            <!-- Controles de Mídia -->
+            <div class="flex items-center space-x-6">
+                <button onclick="controlPlayback('previous')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button id="play-pause-btn" onclick="togglePlayPause()" class="w-14 h-14 bg-spotify hover:bg-spotify/90 text-black rounded-full flex items-center justify-center transition transform hover:scale-105 shadow-lg shadow-spotify/20">
+                    <svg id="play-icon" class="w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg id="pause-icon" class="w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <button onclick="controlPlayback('next')" class="text-gray-400 hover:text-white transition transform hover:scale-110">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+            </div>
+
+            <!-- Painel Expansível / Letras ou Extras -->
+            <div class="w-full pt-2">
+                <button onclick="toggleDetails()" class="w-full py-2 bg-gray-900/40 hover:bg-gray-800/60 rounded-xl text-xs text-gray-400 border border-gray-800/60 transition flex items-center justify-center space-x-1">
+                    <span id="details-text">Ver detalhes da faixa</span>
+                    <svg id="details-arrow" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="details-panel" class="hidden mt-2 p-4 bg-gray-900/60 rounded-xl border border-gray-800 text-xs text-gray-300 space-y-2 font-mono">
+                    <p id="detail-album">Álbum: --</p>
+                    <p id="detail-device">Dispositivo: --</p>
+                    <p id="detail-popularity">Popularidade: --</p>
                 </div>
-
             </div>
 
         </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="relative z-10 text-center py-4 text-xs text-zinc-500">
-        Desenvolvido com a API do Spotify &bull; Hospedado no GitHub Pages
+    <!-- Rodapé -->
+    <footer class="w-full max-w-md text-center py-4 text-xs text-gray-500">
+        Desenvolvido com Spotify API & GitHub Pages
     </footer>
 
-    <!-- Script JavaScript Completo -->
+    <!-- Lógica JavaScript (PKCE + Player) -->
     <script>
-        const CLIENT_ID = 'c17b8a32ee1249ef976034607a115409';
-        // Detecta automaticamente se está no GitHub Pages ou em localhost
-        const REDIRECT_URI = window.location.origin + window.location.pathname;
+        const clientId = 'c17b8a32ee1249ef976034607a115409';
+        const redirectUri = window.location.origin + window.location.pathname;
+        const scopes = 'user-read-playback-state user-read-currently-playing user-modify-playback-state';
 
         let accessToken = localStorage.getItem('spotify_access_token');
         let refreshToken = localStorage.getItem('spotify_refresh_token');
         let tokenExpiry = localStorage.getItem('spotify_token_expiry');
+        let currentTrackUri = null;
+        let isPlayingState = false;
+        let progressInterval = null;
+        let trackDuration = 0;
+        let trackProgress = 0;
 
-        let isPlaying = false;
-        let pollInterval = null;
-        let currentTrackDuration = 0;
-        let currentProgressMs = 0;
+        // Início da aplicação
+        window.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
 
-        // Gerenciamento de Temas do Vinil
-        function setTheme(theme) {
-            const disc = document.getElementById('vinyl-disc');
-            const btnClassic = document.getElementById('btn-theme-classic');
-            const btnGold = document.getElementById('btn-theme-gold');
-            const btnCyber = document.getElementById('btn-theme-cyber');
-
-            // Reset buttons
-            [btnClassic, btnGold, btnCyber].forEach(b => {
-                b.className = "px-3 py-1 rounded-full transition text-zinc-400 hover:text-white";
-            });
-
-            if (theme === 'classic') {
-                disc.style.background = `repeating-radial-gradient(circle at center, #111 0px, #111 2px, #222 3px, #111 4px, #1a1a1a 6px)`;
-                document.getElementById('bg-glow-1').className = "absolute -top-40 -left-40 w-96 h-96 bg-spotify/20 rounded-full blur-[120px] transition-all duration-1000";
-                btnClassic.className = "px-3 py-1 rounded-full transition bg-spotify text-black font-medium";
-            } else if (theme === 'gold') {
-                disc.style.background = `repeating-radial-gradient(circle at center, #2c220f 0px, #2c220f 2px, #443512 3px, #2c220f 4px, #382c0f 6px)`;
-                document.getElementById('bg-glow-1').className = "absolute -top-40 -left-40 w-96 h-96 bg-amber-500/20 rounded-full blur-[120px] transition-all duration-1000";
-                btnGold.className = "px-3 py-1 rounded-full transition bg-amber-500 text-black font-medium";
-            } else if (theme === 'cyber') {
-                disc.style.background = `repeating-radial-gradient(circle at center, #0f172a 0px, #0f172a 2px, #1e293b 3px, #0f172a 4px, #111827 6px)`;
-                document.getElementById('bg-glow-1').className = "absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] transition-all duration-1000";
-                btnCyber.className = "px-3 py-1 rounded-full transition bg-cyan-500 text-black font-medium";
+            if (code) {
+                // Remove o código da URL para limpeza
+                window.history.replaceState({}, document.title, redirectUri);
+                await exchangeCodeForToken(code);
+            } else if (accessToken) {
+                // Verifica se o token expirou
+                if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
+                    await refreshAccessToken();
+                } else {
+                    showPlayer();
+                }
+            } else {
+                showLogin();
             }
-        }
 
-        // --- PKCE Flow Helpers ---
-        function generateRandomString(length) {
-            let text = '';
+            document.getElementById('login-btn').addEventListener('click', redirectToSpotifyLogin);
+        });
+
+        async function redirectToSpotifyLogin() {
             const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            for (let i = 0; i < length; i++) {
-                text += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return text;
-        }
+            const randomString = (length) => Array.from(crypto.getRandomValues(new Uint8Array(length))).map(x => possible[x % possible.length]).join('');
+            
+            const codeVerifier = randomString(64);
+            const data = new TextEncoder().encode(codeVerifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(digest)))
+                .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 
-        async function generateCodeChallenge(codeVerifier) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(codeVerifier);
-            const digest = await window.crypto.subtle.digest('SHA-256', data);
-            return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-                .replace(/\+/g, '-')
-                .replace(/\//g, '_')
-                .replace(/=+$/, '');
-        }
+            localStorage.setItem('spotify_code_verifier', codeVerifier);
 
-        async function loginWithSpotify() {
-            const codeVerifier = generateRandomString(128);
-            localStorage.setItem('code_verifier', codeVerifier);
-            const codeChallenge = await generateCodeChallenge(codeVerifier);
-
-            const scope = 'user-read-playback-state user-read-currently-playing user-modify-playback-state';
             const authUrl = new URL('https://accounts.spotify.com/authorize');
+            authUrl.searchParams.append('client_id', clientId);
+            authUrl.searchParams.append('response_type', 'code');
+            authUrl.searchParams.append('redirect_uri', redirectUri);
+            authUrl.searchParams.append('code_challenge_method', 'S256');
+            authUrl.searchParams.append('code_challenge', codeChallenge);
+            authUrl.searchParams.append('scope', scopes);
 
-            const params = {
-                client_id: CLIENT_ID,
-                response_type: 'code',
-                redirect_uri: REDIRECT_URI,
-                code_challenge_method: 'S256',
-                code_challenge: codeChallenge,
-                scope: scope,
-            };
-
-            authUrl.search = new URLSearchParams(params).toString();
             window.location.href = authUrl.toString();
         }
 
-        // Troca o 'code' por 'access_token'
         async function exchangeCodeForToken(code) {
-            const codeVerifier = localStorage.getItem('code_verifier');
-            const body = new URLSearchParams({
-                client_id: CLIENT_ID,
-                grant_type: 'authorization_code',
-                code: code,
-                redirect_uri: REDIRECT_URI,
-                code_verifier: codeVerifier,
-            });
+            const codeVerifier = localStorage.getItem('spotify_code_verifier');
+            if (!codeVerifier) {
+                showLogin();
+                return;
+            }
 
             try {
                 const response = await fetch('https://accounts.spotify.com/api/token', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: body
+                    body: new URLSearchParams({
+                        client_id: clientId,
+                        grant_type: 'authorization_code',
+                        code: code,
+                        redirect_uri: redirectUri,
+                        code_verifier: codeVerifier,
+                    }),
                 });
+
                 const data = await response.json();
                 if (data.access_token) {
-                    accessToken = data.access_token;
-                    refreshToken = data.refreshToken || data.refresh_token;
-                    localStorage.setItem('spotify_access_token', accessToken);
-                    if (refreshToken) localStorage.setItem('spotify_refresh_token', refreshToken);
-                    localStorage.setItem('spotify_token_expiry', Date.now() + (data.expires_in * 1000));
-                    
-                    window.history.replaceState({}, document.title, REDIRECT_URI);
-                    initApp();
+                    saveTokens(data);
+                    showPlayer();
+                } else {
+                    showLogin();
                 }
-            } catch (error) {
-                console.error('Erro ao trocar token:', error);
+            } catch (err) {
+                console.error('Erro ao trocar token:', err);
+                showLogin();
             }
+        }
+
+        async function refreshAccessToken() {
+            if (!refreshToken) {
+                showLogin();
+                return;
+            }
+
+            try {
+                const response = await fetch('https://accounts.spotify.com/api/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        client_id: clientId,
+                        grant_type: 'refresh_token',
+                        refresh_token: refreshToken,
+                    }),
+                });
+
+                const data = await response.json();
+                if (data.access_token) {
+                    saveTokens(data);
+                } else {
+                    showLogin();
+                }
+            } catch (err) {
+                console.error('Erro ao atualizar token:', err);
+                showLogin();
+            }
+        }
+
+        function saveTokens(data) {
+            accessToken = data.access_token;
+            localStorage.setItem('spotify_access_token', accessToken);
+            if (data.refresh_token) {
+                refreshToken = data.refresh_token;
+                localStorage.setItem('spotify_refresh_token', refreshToken);
+            }
+            if (data.expires_in) {
+                const expiryTime = Date.now() + (data.expires_in * 1000);
+                tokenExpiry = expiryTime;
+                localStorage.setItem('spotify_token_expiry', expiryTime);
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('player-screen').classList.add('hidden');
+        }
+
+        function showPlayer() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('player-screen').classList.remove('hidden');
+            
+            // Renderiza botão de logout no header
+            document.getElementById('auth-container').innerHTML = `
+                <button onclick="logout()" class="text-xs text-gray-400 hover:text-white bg-gray-800/80 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition">Sair</button>
+            `;
+
+            fetchCurrentPlayback();
+            setInterval(fetchCurrentPlayback, 3000); // Consulta a cada 3 segundos
         }
 
         function logout() {
             localStorage.clear();
-            location.reload();
+            window.location.href = redirectUri;
         }
 
-        // Inicialização ao carregar a página
-        window.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
+        async function fetchCurrentPlayback() {
+            if (!accessToken) return;
 
-            if (code) {
-                await exchangeCodeForToken(code);
-            } else if (accessToken) {
-                initApp();
-            }
-        });
-
-        function initApp() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('player-screen').classList.remove('hidden');
-            document.getElementById('logout-btn').classList.remove('hidden');
-
-            fetchCurrentlyPlaying();
-            pollInterval = setInterval(fetchCurrentlyPlaying, 2500);
-        }
-
-        // Consulta à API do Spotify
-        async function fetchCurrentlyPlaying() {
             try {
-                const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                const response = await fetch('https://api.spotify.com/v1/me/player', {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
 
-                if (response.status === 204 || response.status === 205) {
-                    setIdleState();
+                if (response.status === 401) {
+                    await refreshAccessToken();
                     return;
                 }
 
-                if (response.status === 401) {
-                    // Token expirado
-                    logout();
+                if (response.status === 204 || response.status > 400) {
+                    setIdleState();
                     return;
                 }
 
                 const data = await response.json();
-                if (data && data.item) {
-                    updatePlayerUI(data);
-                } else {
-                    setIdleState();
-                }
-            } catch (error) {
-                console.error('Erro ao buscar player:', error);
+                updatePlayerUI(data);
+            } catch (err) {
+                console.error('Erro ao buscar player:', err);
             }
         }
 
         function setIdleState() {
-            isPlaying = false;
-            document.getElementById('track-title').innerText = 'Nenhuma música tocando';
-            document.getElementById('track-artist').innerText = 'Abra o Spotify em algum dispositivo';
-            document.getElementById('album-art').src = 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&auto=format&fit=crop&q=60';
-            document.getElementById('vinyl-label-img').src = 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&auto=format&fit=crop&q=60';
-            document.getElementById('album-name').innerText = '-';
-            document.getElementById('device-name').innerText = 'Nenhum';
-            
-            const vinyl = document.getElementById('vinyl-disc');
-            const sleeve = document.getElementById('album-sleeve');
-            vinyl.classList.add('animate-spin-paused');
-            vinyl.style.transform = 'translateX(0px)';
-            sleeve.style.transform = 'translateX(0px)';
-
-            document.getElementById('play-pause-icon').className = 'fa-solid fa-play ml-0.5';
+            document.getElementById('track-name').innerText = 'Nenhuma música tocando';
+            document.getElementById('artist-name').innerText = 'Abra o Spotify e dê play em alguma faixa';
+            document.getElementById('vinyl-record').classList.add('paused');
+            document.getElementById('sleeve-img').src = '';
+            document.getElementById('vinyl-center-img').src = '';
+            isPlayingState = false;
+            updatePlayPauseIcon(false);
+            clearInterval(progressInterval);
         }
 
         function updatePlayerUI(data) {
+            if (!data || !data.item) {
+                setIdleState();
+                return;
+            }
+
             const track = data.item;
-            const album = track.album;
-            const artistNames = track.artists.map(a => a.name).join(', ');
-            
-            document.getElementById('track-title').innerText = track.name;
-            document.getElementById('track-artist').innerText = artistNames;
-            document.getElementById('album-name').innerText = album.name;
-            
-            if (data.device && data.device.name) {
-                document.getElementById('device-name').innerText = data.device.name;
+            const isPlaying = data.is_playing;
+            isPlayingState = isPlaying;
+
+            document.getElementById('track-name').innerText = track.name;
+            document.getElementById('artist-name').innerText = track.artists.map(a => a.name).join(', ');
+
+            const albumImg = track.album.images[0]?.url || '';
+            if (document.getElementById('sleeve-img').src !== albumImg) {
+                document.getElementById('sleeve-img').src = albumImg;
+                document.getElementById('vinyl-center-img').src = albumImg;
             }
 
-            const imageUrl = album.images[0]?.url || '';
-            const currentArt = document.getElementById('album-art').src;
-            if (currentArt !== imageUrl) {
-                document.getElementById('album-art').src = imageUrl;
-                document.getElementById('vinyl-label-img').src = imageUrl;
+            // Controle da animação do vinil
+            const vinyl = document.getElementById('vinyl-record');
+            if (isPlaying) {
+                vinyl.classList.remove('paused');
+            } else {
+                vinyl.classList.add('paused');
             }
 
-            // Progresso
-            currentTrackDuration = track.duration_ms;
-            currentProgressMs = data.progress_ms;
-            updateProgressBar();
+            updatePlayPauseIcon(isPlaying);
 
-            // Estado de Reprodução
-            isPlaying = data.is_playing;
-            const vinyl = document.getElementById('vinyl-disc');
-            const sleeve = document.getElementById('album-sleeve');
-            const playIcon = document.getElementById('play-pause-icon');
+            // Barra de progresso
+            trackDuration = track.duration_ms;
+            trackProgress = data.progress_ms;
+            updateProgressUI();
 
             if (isPlaying) {
-                vinyl.classList.remove('animate-spin-paused');
-                // Vinil desliza levemente para fora da capa quando toca
-                vinyl.style.transform = 'translateX(45%)';
-                sleeve.style.transform = 'translateX(-15%)';
-                playIcon.className = 'fa-solid fa-pause';
+                startProgressTicker();
             } else {
-                vinyl.classList.add('animate-spin-paused');
-                vinyl.style.transform = 'translateX(0px)';
-                sleeve.style.transform = 'translateX(0px)';
-                playIcon.className = 'fa-solid fa-play ml-0.5';
+                clearInterval(progressInterval);
+            }
+
+            // Detalhes extras
+            document.getElementById('detail-album').innerText = `Álbum: ${track.album.name}`;
+            document.getElementById('detail-device').innerText = `Dispositivo: ${data.device?.name || 'Padrão'} (${data.device?.type || ''})`;
+            document.getElementById('detail-popularity').innerText = `Popularidade: ${track.popularity}/100`;
+        }
+
+        function updatePlayPauseIcon(isPlaying) {
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            if (isPlaying) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
             }
         }
 
-        function updateProgressBar() {
-            const currentSec = Math.floor(currentProgressMs / 1000);
-            const totalSec = Math.floor(currentTrackDuration / 1000);
+        function startProgressTicker() {
+            clearInterval(progressInterval);
+            progressInterval = setInterval(() => {
+                if (isPlayingState) {
+                    trackProgress += 1000;
+                    if (trackProgress > trackDuration) trackProgress = trackDuration;
+                    updateProgressUI();
+                }
+            }, 1000);
+        }
 
-            document.getElementById('current-time').innerText = formatTime(currentSec);
-            document.getElementById('total-time').innerText = formatTime(totalSec);
+        function updateProgressUI() {
+            const currentSecs = Math.floor(trackProgress / 1000);
+            const totalSecs = Math.floor(trackDuration / 1000);
 
-            const percent = (currentProgressMs / currentTrackDuration) * 100;
-            document.getElementById('progress-bar').style.width = `${Math.min(percent, 100)}%`;
+            document.getElementById('current-time').innerText = formatTime(currentSecs);
+            document.getElementById('total-time').innerText = formatTime(totalSecs);
+
+            const percentage = trackDuration > 0 ? (trackProgress / trackDuration) * 100 : 0;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
         }
 
         function formatTime(seconds) {
@@ -450,57 +452,95 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // Controles de Play/Pause, Next, Previous
+        // Controle de Reprodução (Play/Pause/Skip)
         async function togglePlayPause() {
-            const endpoint = isPlaying ? 'pause' : 'play';
+            const endpoint = isPlayingState ? 'pause' : 'play';
             try {
-                await fetch(`https://api.spotify.com/v1/me/player/${endpoint}`, {
+                const response = await fetch(`https://api.spotify.com/v1/me/player/${endpoint}`, {
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                setTimeout(fetchCurrentlyPlaying, 300);
-            } catch (error) {
-                console.error('Erro ao controlar reprodução:', error);
+                if (response.status === 401) {
+                    await refreshAccessToken();
+                    return;
+                }
+                setTimeout(fetchCurrentPlayback, 400);
+            } catch (err) {
+                console.error('Erro ao alternar play/pause:', err);
             }
         }
 
         async function controlPlayback(action) {
             try {
-                await fetch(`https://api.spotify.com/v1/me/player/${action}`, {
-                    method: action === 'next' || action === 'previous' ? 'POST' : 'PUT',
+                const response = await fetch(`https://api.spotify.com/v1/me/player/${action}`, {
+                    method: 'POST',
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                setTimeout(fetchCurrentlyPlaying, 400);
-            } catch (error) {
-                console.error(`Erro ao executar ${action}:`, error);
+                if (response.status === 401) {
+                    await refreshAccessToken();
+                    return;
+                }
+                setTimeout(fetchCurrentPlayback, 500);
+            } catch (err) {
+                console.error(`Erro ao executar ${action}:`, err);
             }
         }
 
+        // Seek interativo na barra
         async function seekTrack(event) {
             const container = document.getElementById('progress-container');
             const rect = container.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const width = rect.width;
-            const percent = clickX / width;
-            const targetMs = Math.floor(currentTrackDuration * percent);
+            const percentage = clickX / width;
+            const seekPos = Math.floor(trackDuration * percentage);
 
             try {
-                await fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${targetMs}`, {
+                const response = await fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${seekPos}`, {
                     method: 'PUT',
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
-                currentProgressMs = targetMs;
-                updateProgressBar();
-            } catch (error) {
-                console.error('Erro ao buscar posição:', error);
+                if (response.ok) {
+                    trackProgress = seekPos;
+                    updateProgressUI();
+                }
+            } catch (err) {
+                console.error('Erro ao buscar posição na música:', err);
             }
         }
 
+        // Temas do Vinil
+        function setTheme(theme) {
+            const vinyl = document.getElementById('vinyl-record');
+            vinyl.classList.remove('vinyl-grooves', 'vinyl-gold', 'vinyl-cyber');
+
+            if (theme === 'classic') vinyl.classList.add('vinyl-grooves');
+            if (theme === 'gold') vinyl.classList.add('vinyl-gold');
+            if (theme === 'cyber') vinyl.classList.add('vinyl-cyber');
+
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                if (btn.dataset.theme === theme) {
+                    btn.classList.add('bg-gray-800');
+                } else {
+                    btn.classList.remove('bg-gray-800');
+                }
+            });
+        }
+
+        // Painel de Detalhes
         function toggleDetails() {
-            const details = document.getElementById('extra-details');
-            const icon = document.getElementById('details-icon');
-            details.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
+            const panel = document.getElementById('details-panel');
+            const arrow = document.getElementById('details-arrow');
+            const text = document.getElementById('details-text');
+
+            panel.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+            
+            if (panel.classList.contains('hidden')) {
+                text.innerText = 'Ver detalhes da faixa';
+            } else {
+                text.innerText = 'Ocultar detalhes';
+            }
         }
     </script>
 </body>
