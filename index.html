@@ -18,7 +18,6 @@
                     colors: {
                         spotify: '#1DB954',
                         spotifyDark: '#121212',
-                        /* Estética Neo-Brutalism inspirada no anexo */
                         bgCustom: '#86F46F',
                         cardBg: '#ffffff',
                         borderCustom: '#111111',
@@ -59,7 +58,6 @@
         .paused {
             animation-play-state: paused;
         }
-        /* Ranhuras do Vinil */
         .vinyl-grooves {
             background: repeating-radial-gradient(
                 circle at center,
@@ -88,7 +86,6 @@
             );
         }
         
-        /* Estilos Neo-Brutalism aplicados */
         .brutal-card {
             background: var(--card-bg);
             border: 3px solid var(--border-color);
@@ -110,7 +107,6 @@
             box-shadow: 5px 5px 0px #111;
         }
 
-        /* Scrollbars customizadas */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -169,20 +165,17 @@
         <!-- Estado Conectado / Player -->
         <div id="player-screen" class="w-full flex flex-col items-center justify-center hidden py-2 sm:py-4">
             
-            <!-- Contêiner Dinâmico -->
             <div id="player-layout-container" class="flex flex-col items-center justify-center w-full max-w-md transition-all duration-300 gap-6 sm:gap-8">
                 
                 <!-- Player & Vinil -->
                 <div class="brutal-card bg-white flex flex-col items-center space-y-5 sm:space-y-6 w-full max-w-md p-5 sm:p-6">
                     
-                    <!-- Seletores de Tema do Vinil -->
                     <div class="flex space-x-1.5 sm:space-x-2 bg-gray-100 p-1 rounded-xl border-2 border-[#111] text-[11px] sm:text-xs">
                         <button onclick="setTheme('classic')" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#DF39F4] text-white font-bold transition theme-btn" data-theme="classic">Clássico</button>
                         <button onclick="setTheme('gold')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-200 text-[#111] font-bold transition theme-btn" data-theme="gold">Dourado</button>
                         <button onclick="setTheme('cyber')" class="px-2.5 sm:px-3 py-1.5 rounded-lg hover:bg-gray-200 text-[#111] font-bold transition theme-btn" data-theme="cyber">Cyberpunk</button>
                     </div>
 
-                    <!-- Palco do Vinil -->
                     <div class="relative w-60 h-60 sm:w-64 sm:h-64 flex items-center justify-center my-2">
                         <div id="album-sleeve" class="absolute left-0 w-48 h-48 sm:w-52 sm:h-52 bg-white rounded-lg shadow-2xl border-2 border-[#111] overflow-hidden transition-all duration-500 transform -translate-x-4 sm:-translate-x-5 rotate-[-4deg]">
                             <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover">
@@ -195,13 +188,11 @@
                         </div>
                     </div>
 
-                    <!-- Informações da Música -->
                     <div class="w-full text-center space-y-1 px-2">
                         <h3 id="track-name" class="text-base sm:text-lg font-extrabold truncate text-[#111]">Nenhuma música tocando</h3>
                         <p id="artist-name" class="text-xs sm:text-sm text-gray-600 font-semibold truncate">Abra o Spotify e dê play</p>
                     </div>
 
-                    <!-- Barra de Progresso -->
                     <div class="w-full space-y-1 px-2">
                         <div class="flex justify-between text-[11px] sm:text-xs text-gray-600 font-mono font-bold">
                             <span id="current-time">0:00</span>
@@ -212,7 +203,6 @@
                         </div>
                     </div>
 
-                    <!-- Controles de Mídia -->
                     <div class="flex items-center space-x-6 sm:space-x-8 pt-2">
                         <button onclick="controlPlayback('previous')" class="text-[#111] hover:text-[#DF39F4] transition transform hover:scale-110 p-2">
                             <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
@@ -251,7 +241,6 @@
 
     <!-- MODAL DE LETRAS EM TELA CHEIA -->
     <div id="fullscreen-lyrics-modal" class="fixed inset-0 z-50 bg-[#86F46F]/95 backdrop-blur-2xl flex flex-col hidden transition-opacity duration-300">
-        <!-- Barra Superior do Modal -->
         <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-6 border-b-3 border-[#111] bg-white gap-3 shadow-[0_4px_0px_#111]">
             <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-3 w-full sm:w-auto truncate">
                 <span id="fs-track-title" class="font-extrabold text-base sm:text-lg text-[#111] truncate">Música</span>
@@ -259,7 +248,6 @@
                 <span id="fs-artist-title" class="text-xs sm:text-sm text-gray-600 font-semibold truncate">Artista</span>
             </div>
 
-            <!-- Seletores de Tipo & Fechar -->
             <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3">
                 <div class="flex space-x-1 bg-gray-100 p-1 rounded-xl border-2 border-[#111] text-[11px] sm:text-xs">
                     <button onclick="setLyricsMode('karaoke')" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#DF39F4] text-white font-bold transition lyric-mode-btn" data-mode="karaoke">Karaokê</button>
@@ -272,7 +260,6 @@
             </div>
         </div>
 
-        <!-- Área Central da Letra em Tela Cheia -->
         <div id="fs-lyrics-box" class="flex-1 overflow-y-auto py-48 sm:py-64 px-4 text-center relative scroll-smooth flex flex-col items-center">
             <div id="fs-lyrics-content" class="w-full max-w-xl text-gray-600 font-bold text-sm sm:text-base">Carregando letra...</div>
         </div>
@@ -283,10 +270,16 @@
         Spotify Vinyl & LRCLIB Dynamic Integration
     </footer>
 
-    <!-- Lógica JavaScript -->
+    <!-- Lógica JavaScript Atualizada para o Custom Scheme -->
     <script>
         const clientId = 'c17b8a32ee1249ef976034607a115409';
-        const redirectUri = window.location.origin + window.location.pathname;
+        
+        // Detecta se está rodando no app nativo do Cordova (file://) ou no Navegador Web comum
+        const isCordova = window.location.protocol === 'file:';
+        const redirectUri = isCordova 
+            ? 'meuspitchapp://callback' 
+            : window.location.origin + window.location.pathname;
+
         const scopes = 'user-read-playback-state user-read-currently-playing user-modify-playback-state';
 
         let accessToken = localStorage.getItem('spotify_access_token');
@@ -302,11 +295,22 @@
         let isSplitLayoutActive = false;
 
         window.addEventListener('DOMContentLoaded', async () => {
+            // Captura o código de autenticação (funciona tanto na web via query params quanto no app custom scheme se interceptado)
             const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
+            let code = params.get('code');
+
+            // Caso especial para capturar parâmetros caso venha pelo custom scheme do Android (ex: meuspitchapp://callback?code=...)
+            if (!code && window.location.href.includes('code=')) {
+                try {
+                    const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
+                    code = urlParams.get('code');
+                } catch (e) {}
+            }
 
             if (code) {
-                window.history.replaceState({}, document.title, redirectUri);
+                if (!isCordova) {
+                    window.history.replaceState({}, document.title, redirectUri);
+                }
                 await exchangeCodeForToken(code);
             } else if (accessToken) {
                 if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
@@ -341,6 +345,12 @@
             authUrl.searchParams.append('code_challenge', codeChallenge);
             authUrl.searchParams.append('scope', scopes);
 
+            // Se for Cordova, idealmente abrimos o navegador externo para o login redirecionar de volta via intent
+            if (isCordova && window.cordova && window.cordova.InAppBrowser) {
+                // Se preferir usar o InAppBrowser:
+                // const browser = cordova.InAppBrowser.open(authUrl.toString(), '_system', 'location=yes');
+            }
+            
             window.location.href = authUrl.toString();
         }
 
@@ -421,7 +431,7 @@
 
         function logout() {
             localStorage.clear();
-            window.location.href = redirectUri;
+            window.location.href = isCordova ? 'index.html' : redirectUri;
         }
 
         async function fetchCurrentPlayback() {
