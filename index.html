@@ -5,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>THE TIMELESS • SPOTIFY VINYL</title>
     
+    <!-- FontAwesome & Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Syne:wght@700;800&family=VT323&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pinkNeon: '#ff2a75',
+                        yellowNeon: '#ffd600',
+                        greenNeon: '#00ff66',
+                        limeNeon: '#adff2f',
+                        cyanNeon: '#00bfff',
+                        purpleNeon: '#b19cd9'
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
         :root {
@@ -20,7 +40,6 @@
             --yellow-neon: #ffd600;
             --green-neon: #00ff66;
             --lime-neon: #adff2f;
-            --cyan-neon: #00bfff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -39,7 +58,6 @@
             transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.4s ease;
         }
 
-        /* --- EFEITO PORTAL FECHANDO (CINEMÁTICO ARANHAVERSO) --- */
         body.portal-closing {
             transform: scaleY(0.005) scaleX(1.2);
             opacity: 0;
@@ -47,7 +65,6 @@
             filter: brightness(3) contrast(2);
         }
 
-        /* --- DYNAMIC ISLAND (ESTÉTICA HUB IDÊNTICA) --- */
         .island-container {
             position: fixed; top: 12px; width: 100%; display: flex; justify-content: center; z-index: 9999; pointer-events: none;
         }
@@ -98,7 +115,6 @@
 
         .ambilight-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; background: repeating-linear-gradient(45deg, #222, #222 1px, transparent 1px, transparent 10px); transition: all 0.5s ease; }
         
-        /* --- ESTRUTURA PRINCIPAL RESPONSIVA --- */
         .app-container { 
             position: relative; 
             width: 100vw; 
@@ -154,7 +170,6 @@
         .btn-outline { background: #ffffff; color: #000; }
         .btn-outline:hover { background: var(--pink-neon); color: #fff; }
 
-        /* --- BRUTALIST CARD & PLAYER LAYOUT --- */
         .brutal-card {
             background: #ffffff;
             border: 4px solid #000000;
@@ -181,7 +196,6 @@
             gap: 24px;
         }
 
-        /* Vinyl Animations & Grooves */
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -202,7 +216,6 @@
             background: repeating-radial-gradient(circle at center, #0b0f19 0px, #0b0f19 2px, #00f0ff 3px, #110022 4px);
         }
 
-        /* Barra de Progresso Brutalista */
         .progress-bar-container {
             width: 100%;
             height: 16px;
@@ -220,7 +233,6 @@
             transition: width 0.1s linear;
         }
 
-        /* Painel de Letras Sincronizadas */
         .lyrics-pane {
             display: none;
             flex-direction: column;
@@ -237,7 +249,6 @@
             display: flex;
         }
 
-        /* Modal Fullscreen de Letras */
         #fullscreen-lyrics-modal {
             position: fixed;
             inset: 0;
@@ -257,7 +268,6 @@
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--pink-neon); border: 2px solid #000; }
 
-        /* Utilitários de controle e header superior */
         .top-toolbar {
             position: fixed;
             top: 65px;
@@ -277,7 +287,6 @@
 
 <div class="ambilight-bg" id="ambilight"></div>
 
-<!-- BARRA DE FERRAMENTAS SUPERIOR (QUANDO CONECTADO) -->
 <div id="top-toolbar" class="top-toolbar" style="display: none;">
     <div class="brutal-card bg-white px-3 py-1.5 flex items-center space-x-2 font-black text-sm shadow-[3px_3px_0px_#000]">
         <i class="fa-brands fa-spotify text-emerald-500 text-lg"></i>
@@ -300,7 +309,6 @@
 
 <div class="app-container">
     
-    <!-- TELA LOGIN -->
     <div id="login-screen" class="screen active" style="background-color: var(--pink-neon);">
         <h1>SPOTIFY<br><span style="color: transparent; -webkit-text-stroke: 2px #000;">VINYL</span></h1>
         <p style="color: #000; font-weight: 800;">PLAYER IMERSIVO & LETRAS SINCRONIZADAS</p>
@@ -312,22 +320,18 @@
         </div>
     </div>
 
-    <!-- TELA PLAYER -->
     <div id="player-screen" class="screen" style="background-color: #121212; justify-content: center; padding-top: 100px;">
         
         <div id="player-layout-container" class="player-wrapper">
             
-            <!-- CAIXA DO VINIL / PLAYER PRINCIPAL -->
             <div class="brutal-card bg-white p-6 w-full flex flex-col items-center space-y-5">
                 
-                <!-- SELETOR DE TEMA DO VINIL -->
                 <div class="flex space-x-2 bg-gray-100 p-1.5 border-3 border-black shadow-[3px_3px_0px_#000] text-xs font-bold">
                     <button onclick="setTheme('classic')" class="px-3 py-1 bg-pink-500 text-white theme-btn border-2 border-black" data-theme="classic">Clássico</button>
                     <button onclick="setTheme('gold')" class="px-3 py-1 hover:bg-gray-200 text-black theme-btn border-2 border-transparent" data-theme="gold">Dourado</button>
                     <button onclick="setTheme('cyber')" class="px-3 py-1 hover:bg-gray-200 text-black theme-btn border-2 border-transparent" data-theme="cyber">Cyber</button>
                 </div>
 
-                <!-- VINIL E CAPA -->
                 <div class="relative w-64 h-64 flex items-center justify-center my-2">
                     <div id="album-sleeve" class="absolute left-0 w-52 h-52 bg-white rounded-none shadow-2xl border-4 border-black overflow-hidden transition-all duration-500 transform -translate-x-6 rotate-[-4deg]">
                         <img id="sleeve-img" src="" alt="Capa" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/200x200/111/fff?text=SPOTIFY'">
@@ -340,13 +344,11 @@
                     </div>
                 </div>
 
-                <!-- INFO DA FAIXA -->
                 <div class="w-full text-center space-y-1 px-2">
                     <h3 id="track-name" class="text-lg font-black truncate text-black uppercase tracking-tight">Nenhuma música tocando</h3>
                     <p id="artist-name" class="text-xs text-gray-700 font-bold truncate uppercase">Abra o Spotify e dê play</p>
                 </div>
 
-                <!-- PROGRESSO -->
                 <div class="w-full space-y-1">
                     <div class="flex justify-between text-xs font-mono font-bold text-black">
                         <span id="current-time">0:00</span>
@@ -357,7 +359,6 @@
                     </div>
                 </div>
 
-                <!-- CONTROLES DE MÍDIA -->
                 <div class="flex items-center space-x-6 pt-2">
                     <button onclick="controlPlayback('previous')" class="brutal-card bg-gray-100 hover:bg-gray-200 p-3 flex items-center justify-center transition shadow-[3px_3px_0px_#000]">
                         <i class="fa-solid fa-backward-step text-black text-lg"></i>
@@ -373,7 +374,6 @@
 
             </div>
 
-            <!-- PAINEL LATERAL DE LETRAS (SPLIT MODE) -->
             <div id="split-lyrics-pane" class="lyrics-pane p-4 flex flex-col">
                 <div class="flex justify-between items-center pb-3 border-b-2 border-gray-800 mb-3">
                     <span class="text-xs font-black text-pink-500 tracking-wider uppercase font-mono">Letra Sincronizada</span>
@@ -393,7 +393,6 @@
     </div>
 </div>
 
-<!-- MODAL DE LETRAS EM TELA CHEIA -->
 <div id="fullscreen-lyrics-modal" class="p-4 sm:p-8 flex flex-col">
     <div class="w-full flex justify-between items-center pb-4 border-b-4 border-white bg-black">
         <div class="flex flex-col truncate pr-4">
@@ -417,7 +416,6 @@
     </div>
 </div>
 
-<!-- DYNAMIC ISLAND (ESTÉTICA HUB IDÊNTICA) -->
 <div class="island-container">
     <div class="island" id="dynamic-island">
         <i id="island-mini-icon" class="fa-solid fa-spotify"></i>
